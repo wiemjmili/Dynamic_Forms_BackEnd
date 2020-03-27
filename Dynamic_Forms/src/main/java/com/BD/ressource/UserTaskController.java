@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -29,8 +30,6 @@ public class UserTaskController {
 	@PostMapping("/updateUT")
 	public String addGroup(@RequestBody UserTask UT) {
 		
-		System.out.println(UT.getGroupN());
-		
 		UserTask UserT=new UserTask();
 	    List <Group>  listGPUT =new ArrayList();
 		List <UserTask> listUT=UserTaskrepository.findAll();
@@ -48,22 +47,27 @@ public class UserTaskController {
 				  listGPUT.add(listGp.get(i));
 			  }
 		  }
-		  
+		  UserT.setGroupN(UT.getGroupN());
 		  UserT.setGroup(listGPUT);
 	
 		  UserTaskrepository.save(UserT);
-		  UserTaskService.addGptoUT();
+		  UserTaskService.addGptoUT(UserT.getWorkFlow());
 
 		return UT.getName();
 	}
     
+	@GetMapping("/findAlltasks/{nameWF}")
+	public List <UserTask> getTasksWF(@PathVariable String nameWF){
+		return UserTaskService.getTasksforWF(nameWF);
+	}
+	
 	@GetMapping("/findAlltasks")
 	public List <UserTask> getTasks(){
 		return UserTaskrepository.findAll();
 	}
 	
 	@GetMapping("/findTasksWF")
-	public List <UserTask> getTasksWF(){
+	public List <UserTask> getTasksLastWF(){
 		return UserTaskService.getTasksforLastWF();
 	}
 	

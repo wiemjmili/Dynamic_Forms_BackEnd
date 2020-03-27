@@ -2,6 +2,7 @@ package com.BD.service;
 
 import java.io.File;
 import java.io.StringReader;
+import java.io.StringWriter;
 import java.util.List;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -28,10 +29,8 @@ public class WorkflowService {
 	@Autowired
 	private WorkflowRepository repository;
 	
-		public String saveProcess(){
+		public String saveProcess(Workflow wf){
 
-			List <Workflow> list=repository.findAll();
-			Workflow wf=list.get(list.size()-1);
 			String xmlWF=wf.getWFXML();
 			String Name="";
 			
@@ -43,12 +42,11 @@ public class WorkflowService {
 		            Document doc = builder.parse( new InputSource( new StringReader( xmlWF ) ) ); 
 		            NodeList nodeList = doc.getElementsByTagName("bpmn2:process");  
 				    Name= nodeList.item(0).getAttributes().getNamedItem("name").getNodeValue();
-				    System.out.println(Name);
 			        // write the content into xml file
 			        TransformerFactory transformerFactory = TransformerFactory.newInstance();
 			        Transformer transformer = transformerFactory.newTransformer();
 			        DOMSource source = new DOMSource(doc);
-			        StreamResult result = new StreamResult(new File("C:\\Users\\Famille\\Documents\\workspace-sts\\Dynamic_Forms\\src\\main\\resources\\Process.bpmn20.xml"));
+			        StreamResult result = new StreamResult(new File("C:\\Users\\Famille\\git\\Dynamic_Forms_BackEnd\\Dynamic_Forms\\src\\main\\resources\\Process.bpmn20.xml"));
 			        transformer.transform(source, result);
 			        
 		        } catch (Exception e) {  
@@ -59,10 +57,10 @@ public class WorkflowService {
 	}
 		
 		
-		public void addFlowable() {
+		public String addFlowable() {
+			String xmlString="";
 			 try {   
-				 
-				  File file = new File("C:\\Users\\Famille\\Documents\\workspace-sts\\Dynamic_Forms\\src\\main\\resources\\Process.bpmn20.xml");  
+				  File file = new File("C:\\Users\\Famille\\git\\Dynamic_Forms_BackEnd\\Dynamic_Forms\\src\\main\\resources\\Process.bpmn20.xml");  
 				  DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();  
 				  DocumentBuilder db = dbf.newDocumentBuilder();  
 				  Document doc = db.parse(file);  
@@ -73,12 +71,17 @@ public class WorkflowService {
 				  TransformerFactory transformerFactory = TransformerFactory.newInstance();
 				  Transformer transformer = transformerFactory.newTransformer();
 				  DOMSource source = new DOMSource(doc);
-				  StreamResult result = new StreamResult(new File("C:\\Users\\Famille\\Documents\\workspace-sts\\Dynamic_Forms\\src\\main\\resources\\Process.bpmn20.xml"));
-				  transformer.transform(source, result);		
+				  StreamResult result = new StreamResult(new File("C:\\Users\\Famille\\git\\Dynamic_Forms_BackEnd\\Dynamic_Forms\\src\\main\\resources\\Process.bpmn20.xml"));
+				  transformer.transform(source, result);	
+			      StringWriter writer = new StringWriter();
+			      //transform document to string 
+			      transformer.transform(new DOMSource(doc), new StreamResult(writer));
+			      xmlString = writer.getBuffer().toString();   
 				  }
 				  catch (Exception e) {  
 				  e.printStackTrace();  
-				  } 
+				  }
+			 return xmlString;
 		}
 
 }

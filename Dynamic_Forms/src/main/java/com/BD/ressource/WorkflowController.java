@@ -1,10 +1,12 @@
 package com.BD.ressource;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.BD.model.Group;
 import com.BD.model.UserTask;
 import com.BD.model.Workflow;
 import org.springframework.web.bind.annotation.*;
@@ -15,7 +17,7 @@ import com.BD.service.WorkflowService;
 import com.BD.service.UserTaskService;
 
 @RestController
-public class WorkflowController{
+public class WorkflowController {
 	
 	@Autowired
 	private WorkflowRepository workflowrepository;
@@ -33,11 +35,12 @@ public class WorkflowController{
 	public String addWF(@RequestBody Workflow WF) {
 		  //save in mongo db 
 		  workflowrepository.save(WF);
-	      // save in file Process.bpmn20.xml
-	      String name=workflowService.saveProcess();
-	      
-	      workflowService.addFlowable();
+	      //save in file Process.bpmn20.xml
+	      String name=workflowService.saveProcess(WF);
+	      String xml=workflowService.addFlowable();
+	      List <Group>  listGP =new ArrayList();
 	      WF.setName(name);
+	      WF.setWFXML(xml);
 		  workflowrepository.save(WF);
 	      // add UserTasks  
 			List <UserTask> list=UserTaskService.getAllTasks();
@@ -45,7 +48,7 @@ public class WorkflowController{
 			  while(i<list.size()) 
 			  {
 				  list.get(i).setWorkFlow(WF);
-				  list.get(i).setGroup(null);
+				  list.get(i).setGroup(listGP);
 				  userTaskrepository.save(list.get(i));
 				  i++;
 			  }  
@@ -62,4 +65,6 @@ public class WorkflowController{
 	public Optional<Workflow> getWorkflow(@PathVariable String id){
 		return workflowrepository.findById(id);
 	}
+	
+
 }

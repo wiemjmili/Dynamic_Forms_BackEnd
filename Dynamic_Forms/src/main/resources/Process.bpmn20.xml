@@ -1,66 +1,66 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?><bpmn2:definitions xmlns:bpmn2="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:flowable="http://www.omg.org/spec/DD/20100524/DI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" id="sample-diagram" targetNamespace="http://bpmn.io/schema/bpmn" xsi:schemaLocation="http://www.omg.org/spec/BPMN/20100524/MODEL BPMN20.xsd">
-  <bpmn2:process id="Process_2" name="Demande attestation de travail">
-    <bpmn2:startEvent id="StartEvent_0hexx5j">
-      <bpmn2:outgoing>SequenceFlow_0cvyw5i</bpmn2:outgoing>
+  <bpmn2:process id="Process_1" name="Attestation travail">
+    <bpmn2:startEvent id="StartEvent_1qp7njk">
+      <bpmn2:outgoing>SequenceFlow_03xikxh</bpmn2:outgoing>
     </bpmn2:startEvent>
-    <bpmn2:sequenceFlow id="SequenceFlow_0cvyw5i" sourceRef="StartEvent_0hexx5j" targetRef="Task_1a0lpby"/>
-    <bpmn2:sequenceFlow id="SequenceFlow_04ll458" sourceRef="Task_1a0lpby" targetRef="Task_17wrqk9"/>
-    <bpmn2:endEvent id="EndEvent_0lvygw1">
-      <bpmn2:incoming>SequenceFlow_04r98no</bpmn2:incoming>
+    <bpmn2:sequenceFlow id="SequenceFlow_03xikxh" sourceRef="StartEvent_1qp7njk" targetRef="Task_19e41i2"/>
+    <bpmn2:sequenceFlow id="SequenceFlow_15nbpr5" sourceRef="Task_19e41i2" targetRef="Task_15rgh5u"/>
+    <bpmn2:endEvent id="EndEvent_1mcp6ms">
+      <bpmn2:incoming>SequenceFlow_15wh54r</bpmn2:incoming>
     </bpmn2:endEvent>
-    <bpmn2:sequenceFlow id="SequenceFlow_04r98no" sourceRef="Task_17wrqk9" targetRef="EndEvent_0lvygw1"/>
-    <bpmn2:userTask flowable:candidateGroups="Group BI" id="Task_1a0lpby" name="Demande attestation de travail">
-      <bpmn2:incoming>SequenceFlow_0cvyw5i</bpmn2:incoming>
-      <bpmn2:outgoing>SequenceFlow_04ll458</bpmn2:outgoing>
+    <bpmn2:sequenceFlow id="SequenceFlow_15wh54r" sourceRef="Task_15rgh5u" targetRef="EndEvent_1mcp6ms"/>
+    <bpmn2:userTask di:candidateGroups="Group BI" id="Task_19e41i2" name="Demande attestation">
+      <bpmn2:incoming>SequenceFlow_03xikxh</bpmn2:incoming>
+      <bpmn2:outgoing>SequenceFlow_15nbpr5</bpmn2:outgoing>
     </bpmn2:userTask>
-    <bpmn2:userTask flowable:candidateGroups="Group RH" id="Task_17wrqk9" name="Envoi de fichier">
-      <bpmn2:incoming>SequenceFlow_04ll458</bpmn2:incoming>
-      <bpmn2:outgoing>SequenceFlow_04r98no</bpmn2:outgoing>
+    <bpmn2:userTask di:candidateGroups="Group RH" id="Task_15rgh5u" name="Envoi fichier">
+      <bpmn2:incoming>SequenceFlow_15nbpr5</bpmn2:incoming>
+      <bpmn2:outgoing>SequenceFlow_15wh54r</bpmn2:outgoing>
     </bpmn2:userTask>
   </bpmn2:process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_1">
-    <bpmndi:BPMNPlane bpmnElement="Process_2" id="BPMNPlane_1">
+    <bpmndi:BPMNPlane bpmnElement="Process_1" id="BPMNPlane_1">
       <bpmndi:BPMNShape id="_BPMNShape_StartEvent_2">
         <dc:Bounds height="36" width="36" x="412" y="240"/>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="StartEvent_0hexx5j" id="StartEvent_0hexx5j_di">
-        <dc:Bounds height="36" width="36" x="200" y="170"/>
+      <bpmndi:BPMNShape bpmnElement="StartEvent_1qp7njk" id="StartEvent_1qp7njk_di">
+        <dc:Bounds height="36" width="36" x="161" y="151"/>
         <bpmndi:BPMNLabel>
-          <dc:Bounds height="13" width="0" x="218" y="209"/>
+          <dc:Bounds height="12" width="0" x="179" y="191"/>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNEdge bpmnElement="SequenceFlow_0cvyw5i" id="SequenceFlow_0cvyw5i_di">
-        <di:waypoint x="236" y="188"/>
-        <di:waypoint x="286" y="188"/>
+      <bpmndi:BPMNEdge bpmnElement="SequenceFlow_03xikxh" id="SequenceFlow_03xikxh_di">
+        <di:waypoint x="197" y="169"/>
+        <di:waypoint x="247" y="169"/>
         <bpmndi:BPMNLabel>
-          <dc:Bounds height="13" width="0" x="261" y="166.5"/>
+          <dc:Bounds height="12" width="0" x="222" y="148"/>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="SequenceFlow_04ll458" id="SequenceFlow_04ll458_di">
-        <di:waypoint x="386" y="188"/>
-        <di:waypoint x="436" y="188"/>
+      <bpmndi:BPMNEdge bpmnElement="SequenceFlow_15nbpr5" id="SequenceFlow_15nbpr5_di">
+        <di:waypoint x="347" y="169"/>
+        <di:waypoint x="397" y="169"/>
         <bpmndi:BPMNLabel>
-          <dc:Bounds height="13" width="0" x="411" y="166.5"/>
+          <dc:Bounds height="12" width="0" x="372" y="148"/>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNShape bpmnElement="EndEvent_0lvygw1" id="EndEvent_0lvygw1_di">
-        <dc:Bounds height="36" width="36" x="586" y="170"/>
+      <bpmndi:BPMNShape bpmnElement="EndEvent_1mcp6ms" id="EndEvent_1mcp6ms_di">
+        <dc:Bounds height="36" width="36" x="547" y="151"/>
         <bpmndi:BPMNLabel>
-          <dc:Bounds height="13" width="0" x="604" y="209"/>
+          <dc:Bounds height="12" width="0" x="565" y="191"/>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNEdge bpmnElement="SequenceFlow_04r98no" id="SequenceFlow_04r98no_di">
-        <di:waypoint x="536" y="188"/>
-        <di:waypoint x="586" y="188"/>
+      <bpmndi:BPMNEdge bpmnElement="SequenceFlow_15wh54r" id="SequenceFlow_15wh54r_di">
+        <di:waypoint x="497" y="169"/>
+        <di:waypoint x="547" y="169"/>
         <bpmndi:BPMNLabel>
-          <dc:Bounds height="13" width="0" x="561" y="166.5"/>
+          <dc:Bounds height="12" width="0" x="522" y="148"/>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNShape bpmnElement="Task_1a0lpby" id="UserTask_1sgsgh3_di">
-        <dc:Bounds height="80" width="100" x="286" y="148"/>
+      <bpmndi:BPMNShape bpmnElement="Task_19e41i2" id="UserTask_0e5yffn_di">
+        <dc:Bounds height="80" width="100" x="247" y="129"/>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="Task_17wrqk9" id="UserTask_1skzn4x_di">
-        <dc:Bounds height="80" width="100" x="436" y="148"/>
+      <bpmndi:BPMNShape bpmnElement="Task_15rgh5u" id="UserTask_0zi5ap0_di">
+        <dc:Bounds height="80" width="100" x="397" y="129"/>
       </bpmndi:BPMNShape>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>

@@ -1,7 +1,10 @@
 package com.BD.service;
 import java.io.File;
+import java.io.StringReader;
+import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -16,6 +19,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
+import org.xml.sax.InputSource;
 
 import com.BD.model.UserTask;
 import com.BD.model.Workflow;
@@ -35,7 +39,7 @@ public class UserTaskService {
 		  
 		  List <UserTask>  listUserTask =new ArrayList();
 		  try { 
-		  File file = new File("C:\\Users\\Famille\\Documents\\workspace-sts\\Dynamic_Forms\\src\\main\\resources\\Process.bpmn20.xml");  
+		  File file = new File("C:\\Users\\Famille\\git\\Dynamic_Forms_BackEnd\\Dynamic_Forms\\src\\main\\resources\\Process.bpmn20.xml");  
 		  DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();  
 		  DocumentBuilder db = dbf.newDocumentBuilder();  
 		  Document doc = db.parse(file);  
@@ -58,6 +62,22 @@ public class UserTaskService {
 		  return listUserTask;
 	  } 
   
+  public List <UserTask> getTasksforWF(String nameWF){
+	  
+	  List <UserTask> listUT =UserTaskrepository.findAll();
+	  List <UserTask>  listUTWF =new ArrayList();
+	  
+	  for (int i = 0; i < listUT.size(); i++)   
+	  {   
+		  if(listUT.get(i).getWorkFlow().getName().equals(nameWF)) {
+			
+			  listUTWF.add(listUT.get(i));
+		  }
+	  }
+	
+	  return listUTWF;
+  }
+  
   
   public List <UserTask> getTasksforLastWF(){
 	  
@@ -75,43 +95,53 @@ public class UserTaskService {
 	  return listUTforWF;
   }
   
-  public  void  addGptoUT(){
+  
+  public  void  addGptoUT(Workflow wf){
+
+	  List <UserTask> listUT =UserTaskrepository.findAll();
+	  String xmlWF=wf.getWFXML();
+	  String xmlString="";
+      DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();  
+      DocumentBuilder builder;  
+      try  
+      {  
+          builder = factory.newDocumentBuilder(); 
+         // System.out.println(xmlWF); 
+          Document doc = builder.parse( new InputSource( new StringReader( xmlWF ) ) ); 
+	      doc.getDocumentElement().normalize();
+	      NodeList nodeList = doc.getElementsByTagName("bpmn2:userTask");  
+	      String name="flowable:candidateGroups";
 	  
-	  List <UserTask>  listUserTask =UserTaskrepository.findAll();
-	  try {   
-	  File file = new File("C:\\Users\\Famille\\Documents\\workspace-sts\\Dynamic_Forms\\src\\main\\resources\\Process.bpmn20.xml");  
-	  DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();  
-	  DocumentBuilder db = dbf.newDocumentBuilder();  
-	  Document doc = db.parse(file);  
-	  doc.getDocumentElement().normalize();
-	  NodeList nodeList = doc.getElementsByTagName("bpmn2:userTask");  
-	  String name="flowable:candidateGroups";
-	  
-	  for (int itr = 0; itr < nodeList.getLength(); itr++){
-		  String value="";
-		  Node node = nodeList.item(itr); 
-		  String Name= node.getAttributes().getNamedItem("name").getNodeValue();
-		  		for (int i= 0; i < listUserTask.size(); i++){
-		  			if (Name.equals(listUserTask.get(i).getName())) {
-		  				if(listUserTask.get(i).getGroup()!=null) {
-		  					value=listUserTask.get(i).getGroup().get(0).getName_GP();
-		  			}
-		  		} 
-		  	}
-	      	 Element element=(Element) nodeList.item(itr);
-      		 element.setAttribute(name, value);
-	         TransformerFactory transformerFactory = TransformerFactory.newInstance();
-	         Transformer transformer = transformerFactory.newTransformer();
-	         DOMSource source = new DOMSource(doc);
-	         StreamResult result = new StreamResult(new File("C:\\Users\\Famille\\Documents\\workspace-sts\\Dynamic_Forms\\src\\main\\resources\\Process.bpmn20.xml"));
-	         transformer.transform(source, result);
-      		
-      		
-			}
+	      for (int itr = 0; itr < nodeList.getLength(); itr++){
+	    	  String value="";
+	    	  Node node = nodeList.item(itr); 
+	    	  String Name= node.getAttributes().getNamedItem("name").getNodeValue();
+	    	  	for(int j=0;j<listUT.size();j++) {
+	    		  if(listUT.get(j).getWorkFlow().getId().equals(wf.getId())) {
+		  			if (Name.equals(listUT.get(j).getName())) {
+		  				if(listUT.get(j).getGroup()!=null) {
+		  					value=listUT.get(j).getGroup().get(0).getName_GP();
+		  			    }
+		  		      	 Element element=(Element) nodeList.item(itr);
+		  	      		 element.setAttribute(name, value);
+		  		         TransformerFactory transformerFactory = TransformerFactory.newInstance();
+		  		         Transformer transformer = transformerFactory.newTransformer();
+		  		         DOMSource source = new DOMSource(doc);
+		  		         StreamResult result = new StreamResult(new File("C:\\Users\\Famille\\git\\Dynamic_Forms_BackEnd\\Dynamic_Forms\\src\\main\\resources\\Process.bpmn20.xml"));
+		  		         transformer.transform(source, result);
+		  		         
+		  		         StringWriter writer = new StringWriter();
+		  		         //transform document to string 
+		  		         transformer.transform(new DOMSource(doc), new StreamResult(writer));
+		  		         xmlString = writer.getBuffer().toString();  
+		  		} }
+			}}
+	         wf.setWFXML(xmlString);
+	         Workflowrepository.save(wf);
 	  }
 	  catch (Exception e) {  
 	  e.printStackTrace();  
-	  } 
+	  }
   }
   
 }
