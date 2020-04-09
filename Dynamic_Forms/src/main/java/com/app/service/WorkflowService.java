@@ -53,26 +53,47 @@ public class WorkflowService {
 	
 	@PostMapping("/addWF")
 	public String addWF(@RequestBody Workflow WF) {
-		  //save in mongo db 
-		  workflowrepository.save(WF);
-	      //save in file Process.bpmn20.xml
-	      String name=saveProcess(WF);
-	      String xml=addFlowable();
-	      List <Group>  listGP =new ArrayList();
-	      WF.setName(name);
-	      WF.setWFXML(xml);
-		  workflowrepository.save(WF);
-	      // add UserTasks  
+		
+		List <Workflow>  listwf =workflowrepository.findAll();
+
+		//save in file Process.bpmn20.xml
+		String name=saveProcess(WF);
+		WF.setName(name);
+		
+		boolean find=false;
+		int j=0;
+		while(find==false && listwf.size()>j) {
+			if(listwf.get(j).getName().equals(name)) {
+				find=true;
+			}else j++;
+		}
+
+		if(find==false) {
+
 			List <UserTask> list=UserTaskService.getAllTasks();
-			int i=0;
-			  while(i<list.size()) 
+			// add UserTasks 
+			
+			if(list.size()!=0) {
+				
+				  //save in mongo db 
+				  workflowrepository.save(WF);
+			      String xml=addFlowable();
+			      List<Group>  listGP =new ArrayList();
+			      WF.setWFXML(xml);
+				  workflowrepository.save(WF);
+				  
+			 int i=0;
+			 while(i<list.size()) 
 			  {
 				  list.get(i).setWorkFlow(WF);
 				  list.get(i).setGroup(listGP);
 				  userTaskrepository.save(list.get(i));
 				  i++;
-			  }  
+			  } 
+			 }
 		return "Workflow added"+WF.getName();
+		
+		}else return "Existing Workflow with this name "+WF.getName();
 	}
 	
 	public String saveProcess(Workflow wf){

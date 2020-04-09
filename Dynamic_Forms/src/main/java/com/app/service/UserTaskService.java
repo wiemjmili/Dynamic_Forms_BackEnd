@@ -40,9 +40,7 @@ public class UserTaskService {
 	
 	
 	  public List <UserTask> getTasks(){
-		 
 		return UserTaskrepository.findAll();
-		
 		}
 	
 	
@@ -123,10 +121,8 @@ public class UserTaskService {
 		  {  
 		  Node node = nodeList.item(itr); 
 		  String Name= node.getAttributes().getNamedItem("name").getNodeValue();
-		  System.out.println(Name); 
 		  UserTask task= new UserTask();
 		  task.setName(Name);
-		  task.setGroup(null);
 		  listUserTask.add(task);
 	      } 
 		  }
