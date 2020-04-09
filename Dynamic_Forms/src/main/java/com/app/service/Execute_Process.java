@@ -1,4 +1,4 @@
-package com.BD.service;
+package com.app.service;
 
 import java.util.HashMap;
 import java.util.Map;

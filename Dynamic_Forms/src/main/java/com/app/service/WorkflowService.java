@@ -1,9 +1,11 @@
-package com.BD.service;
+package com.app.service;
 
 import java.io.File;
 import java.io.StringReader;
 import java.io.StringWriter;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -14,22 +16,66 @@ import javax.xml.transform.stream.StreamResult;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
-import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 
-import com.BD.model.Workflow;
-import com.BD.repository.WorkflowRepository;
+import com.app.model.Group;
+import com.app.model.UserTask;
+import com.app.model.Workflow;
+import com.app.repository.UserTaskRepository;
+import com.app.repository.WorkflowRepository;
 
 @Service
 public class WorkflowService {
 
 	@Autowired
-	private WorkflowRepository repository;
+	private WorkflowRepository workflowrepository;
+    
+	@Autowired
+	private UserTaskRepository userTaskrepository;
 	
-		public String saveProcess(Workflow wf){
+    @Autowired
+    private UserTaskService UserTaskService;
+
+	
+	public List <Workflow> getAllWorkflow(){
+		return workflowrepository.findAll();
+	}
+	
+	public Optional<Workflow> getWorkflow(String id){
+		return workflowrepository.findById(id);
+	}
+	
+	
+	@PostMapping("/addWF")
+	public String addWF(@RequestBody Workflow WF) {
+		  //save in mongo db 
+		  workflowrepository.save(WF);
+	      //save in file Process.bpmn20.xml
+	      String name=saveProcess(WF);
+	      String xml=addFlowable();
+	      List <Group>  listGP =new ArrayList();
+	      WF.setName(name);
+	      WF.setWFXML(xml);
+		  workflowrepository.save(WF);
+	      // add UserTasks  
+			List <UserTask> list=UserTaskService.getAllTasks();
+			int i=0;
+			  while(i<list.size()) 
+			  {
+				  list.get(i).setWorkFlow(WF);
+				  list.get(i).setGroup(listGP);
+				  userTaskrepository.save(list.get(i));
+				  i++;
+			  }  
+		return "Workflow added"+WF.getName();
+	}
+	
+	public String saveProcess(Workflow wf){
 
 			String xmlWF=wf.getWFXML();
 			String Name="";

@@ -1,5 +1,4 @@
-package com.BD.model;
-
+package com.app.model;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 

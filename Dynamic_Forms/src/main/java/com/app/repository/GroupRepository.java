@@ -1,8 +1,8 @@
-package com.BD.repository;
+package com.app.repository;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
 
-import com.BD.model.Group;
+import com.app.model.Group;
 
 
 @Repository

@@ -1,10 +1,11 @@
-package com.BD.repository;
+package com.app.repository;
 
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
-import com.BD.model.UserTask;
+
+import com.app.model.Workflow;
 
 @Repository
-public interface UserTaskRepository extends MongoRepository<UserTask,String> {
+public interface WorkflowRepository extends MongoRepository<Workflow,String>{
 
 }

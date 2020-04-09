@@ -1,4 +1,4 @@
-package com.BD.model;
+package com.app.model;
 
 import java.util.List;
 
@@ -10,12 +10,18 @@ public class UserTask {
 			
 		@Id
 		private String id;
-		private String Name;
+		private String name;
 		private String groupN;
-		private Workflow WorkFlow;
-		private List <Group> Group;
-		
+		private Workflow workFlow;
+		private List <Group> group;
+		private String statut;
 
+		public String getStatut() {
+			return statut;
+		}
+		public void setStatut(String statut) {
+			this.statut = statut;
+		}
 		public String getGroupN() {
 			return groupN;
 		}
@@ -28,24 +34,26 @@ public class UserTask {
 		public void setId(String id) {
 			this.id = id;
 		}
+
 		public String getName() {
-			return Name;
+			return name;
 		}
 		public void setName(String name) {
-			Name = name;
+			this.name = name;
 		}
 		public Workflow getWorkFlow() {
-			return WorkFlow;
+			return workFlow;
 		}
 		public void setWorkFlow(Workflow workFlow) {
-			WorkFlow = workFlow;
+			this.workFlow = workFlow;
 		}
 		public List<Group> getGroup() {
-			return Group;
+			return group;
 		}
 		public void setGroup(List<Group> group) {
-			Group = group;
+			this.group = group;
 		}
+
 		
 
 }

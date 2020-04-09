@@ -1,11 +1,13 @@
-package com.BD.ressource;
+package com.app.ressource;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import com.BD.model.User;
-import com.BD.repository.UserRepository;
+
+import com.app.model.User;
+import com.app.repository.UserRepository;
 
 @RestController
+@RequestMapping("/api/user")
 public class UserController {
 	
 	@Autowired

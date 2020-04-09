@@ -1,4 +1,4 @@
-package com.BD.model;
+package com.app.model;
 
 import java.util.List;
 
@@ -14,7 +14,7 @@ public class User {
 	private String email;
 	private String login;
 	private String roles;
-	private List <Group> Groups;
+	private List <Group> groups;
 	
 	public String getId() {
 		return id;
@@ -47,11 +47,12 @@ public class User {
 		this.roles = roles;
 	}
 	public List<Group> getGroups() {
-		return Groups;
+		return groups;
 	}
 	public void setGroups(List<Group> groups) {
-		Groups = groups;
+		this.groups = groups;
 	}
+
 
 
 

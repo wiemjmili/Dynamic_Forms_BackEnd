@@ -1,11 +1,9 @@
-package com.BD.service;
+package com.app.service;
 import java.io.File;
 import java.io.StringReader;
 import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
-
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.transform.Transformer;
@@ -15,16 +13,19 @@ import javax.xml.transform.stream.StreamResult;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 
-import com.BD.model.UserTask;
-import com.BD.model.Workflow;
-import com.BD.repository.UserTaskRepository;
-import com.BD.repository.WorkflowRepository;;
+import com.app.model.Group;
+import com.app.model.UserTask;
+import com.app.model.Workflow;
+import com.app.repository.GroupRepository;
+import com.app.repository.UserTaskRepository;
+import com.app.repository.WorkflowRepository;;
 
 
 @Service
@@ -34,8 +35,81 @@ public class UserTaskService {
 	private UserTaskRepository UserTaskrepository;
 	@Autowired
 	private WorkflowRepository Workflowrepository;
+	@Autowired
+	private GroupRepository Grouprepository;
 	
-  public List <UserTask> getAllTasks() {
+	
+	 public List <UserTask> getTasks(){
+		 
+		return UserTaskrepository.findAll();
+		
+		}
+	
+	
+	  public List <UserTask> getTasksforWF(String nameWF){
+		  
+		  List <UserTask> listUT =UserTaskrepository.findAll();
+		  List <UserTask>  listUTWF =new ArrayList();
+		  
+		  for (int i = 0; i < listUT.size(); i++)   
+		  {   
+			  if(listUT.get(i).getWorkFlow().getName().equals(nameWF)) {
+				
+				  listUTWF.add(listUT.get(i));
+			  }
+		  }
+		
+		  return listUTWF;
+	  }
+	
+		public String getUserTask(String nameUT,String nameWF) {
+			
+			List <UserTask> listUT=UserTaskrepository.findAll();
+			UserTask UT=new UserTask();
+			
+			boolean find=false;
+			int j=0;
+			while(find==false && listUT.size()>j) {
+				if(listUT.get(j).getName().equals(nameUT) && listUT.get(j).getWorkFlow().getName().equals(nameWF)) {
+					find=true;
+					UT=listUT.get(j);
+				}else {
+					j++;
+				}	
+			}
+			return UT.getId();
+			}
+	
+		public String addGroup(@RequestBody UserTask UT) {
+			
+			if(!UT.getName().equals("") || !UT.getGroupN().equals("")) {
+			UserTask UserT=new UserTask();
+		    List <Group>  listGPUT =new ArrayList();
+			List <UserTask> listUT=UserTaskrepository.findAll();
+			List <Group> listGp=Grouprepository.findAll();
+			
+			  for (int i = 0; i < listUT.size(); i++)   
+			  {
+				  if(listUT.get(i).getName().equals(UT.getName())) {
+					        UserT=listUT.get(i);
+				  }
+			  }
+			  for (int i = 0; i < listGp.size(); i++)   
+			  {
+				  if(listGp.get(i).getName_GP().equals(UT.getGroupN())) {
+					  listGPUT.add(listGp.get(i));
+				  }
+			  }
+			  UserT.setGroupN(UT.getGroupN());
+			  UserT.setGroup(listGPUT);
+		
+			  UserTaskrepository.save(UserT);
+			  addGptoUT(UserT.getWorkFlow());
+			}
+			return UT.getName();
+		}
+	
+		public List <UserTask> getAllTasks() {
 		  
 		  List <UserTask>  listUserTask =new ArrayList();
 		  try { 
@@ -62,38 +136,8 @@ public class UserTaskService {
 		  return listUserTask;
 	  } 
   
-  public List <UserTask> getTasksforWF(String nameWF){
-	  
-	  List <UserTask> listUT =UserTaskrepository.findAll();
-	  List <UserTask>  listUTWF =new ArrayList();
-	  
-	  for (int i = 0; i < listUT.size(); i++)   
-	  {   
-		  if(listUT.get(i).getWorkFlow().getName().equals(nameWF)) {
-			
-			  listUTWF.add(listUT.get(i));
-		  }
-	  }
-	
-	  return listUTWF;
-  }
-  
-  
-  public List <UserTask> getTasksforLastWF(){
-	  
-	  List <UserTask> listUT =UserTaskrepository.findAll();
-	  List <Workflow> listWF =Workflowrepository.findAll();
-	  List <UserTask>  listUTforWF =new ArrayList();
-	  Workflow wf=listWF.get(listWF.size()-1);
-	  
-	  for (int i = 0; i < listUT.size(); i++)   
-	  { 
-		  if(listUT.get(i).getWorkFlow().getId().equals(wf.getId())) {
-			  listUTforWF.add(listUT.get(i));
-		  }
-	  }
-	  return listUTforWF;
-  }
+
+
   
   
   public  void  addGptoUT(Workflow wf){
