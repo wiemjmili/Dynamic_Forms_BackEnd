@@ -19,10 +19,8 @@ import com.app.service.UserTaskService;
 @RequestMapping("/api/userTask")
 public class UserTaskController {
  
-	
     @Autowired
     private UserTaskService UserTaskService;
-
 
     @GetMapping("/findAlltasks")
 	public ResponseEntity<List<UserTask>> getTasks() {
@@ -68,38 +66,5 @@ public class UserTaskController {
 			return ResponseEntity.badRequest().header( e.getMessage()).build();
 		}
 	}
-
-	
-/*	@GetMapping("/findAlltasks/{nameWF}")
-	public List <UserTask> getTasksWF(@PathVariable String nameWF){
-		return UserTaskService.getTasksforWF(nameWF);
-	}*/
-	/*@GetMapping("/findAlltasks")
-	public List <UserTask> getTasks(){
-		return UserTaskrepository.findAll();
-	}
-	*/
-	
-    
-	/*@GetMapping("/findUsertask/{tab}")
-	public String getTask(@PathVariable String[] tab) {
-		List <UserTask> listUT=UserTaskrepository.findAll();
-	
-		UserTask UT=new UserTask();
-		
-		boolean find=false;
-		int j=0;
-		while(find==false && listUT.size()>j) {
-			if(listUT.get(j).getName().equals(tab[0]) && listUT.get(j).getWorkFlow().getName().equals(tab[1])) {
-				find=true;
-				UT=listUT.get(j);
-			}else {
-				j++;
-			}	
-		}
-		return UT.getId();
-		}*/
-
-
 
 }

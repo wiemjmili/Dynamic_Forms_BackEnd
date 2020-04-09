@@ -39,7 +39,7 @@ public class UserTaskService {
 	private GroupRepository Grouprepository;
 	
 	
-	 public List <UserTask> getTasks(){
+	  public List <UserTask> getTasks(){
 		 
 		return UserTaskrepository.findAll();
 		

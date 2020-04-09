@@ -26,7 +26,6 @@ public class WorkflowController {
     @Autowired
     private WorkflowService workflowService;
 
-
 	
     @GetMapping("/findAllWF")
 	public ResponseEntity<List<Workflow> >getAllWorkflow() {
@@ -60,39 +59,6 @@ public class WorkflowController {
 			return ResponseEntity.badRequest().header( e.getMessage()).build();
 		}
 	}
-    
-    
-    
-	/*@GetMapping("/findAllWF")
-	public List <Workflow> getWorkflow(){
-		return workflowrepository.findAll();
-	}*/
-	/*@PostMapping("/addWF")
-	public String addWF(@RequestBody Workflow WF) {
-		  //save in mongo db 
-		  workflowrepository.save(WF);
-	      //save in file Process.bpmn20.xml
-	      String name=workflowService.saveProcess(WF);
-	      String xml=workflowService.addFlowable();
-	      List <Group>  listGP =new ArrayList();
-	      WF.setName(name);
-	      WF.setWFXML(xml);
-		  workflowrepository.save(WF);
-	      // add UserTasks  
-			List <UserTask> list=UserTaskService.getAllTasks();
-			int i=0;
-			  while(i<list.size()) 
-			  {
-				  list.get(i).setWorkFlow(WF);
-				  list.get(i).setGroup(listGP);
-				  userTaskrepository.save(list.get(i));
-				  i++;
-			  }  
-		return "Workflow added"+WF.getName();
-	}*/
-    /*	@GetMapping("/findAllWF/{id}")
-	public Optional<Workflow> getWorkflow(@PathVariable String id){
-		return workflowrepository.findById(id);
-	}*/
+ 
 
 }
