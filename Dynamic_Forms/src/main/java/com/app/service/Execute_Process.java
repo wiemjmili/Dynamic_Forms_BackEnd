@@ -36,8 +36,9 @@ public class Execute_Process {
 		    
 		    		System.out.println("Processus: " + processDefinition.getName());
 		    
-		    		Scanner scanner= new Scanner(System.in);
-
+		    		@SuppressWarnings("resource")
+					Scanner scanner= new Scanner(System.in);
+		    		
 		    		System.out.println("Nom et Prénom :");
 		    		String employee = scanner.nextLine();
 		    		
@@ -50,11 +51,10 @@ public class Execute_Process {
 		    		variables.put("employee", employee);
 		    		variables.put("raison", raison);
 
-		    		ProcessInstance processInstance =
+		    		@SuppressWarnings("unused")
+					ProcessInstance processInstance =
 		    		  runtimeService.startProcessInstanceByKey("Process_2", variables);
 
-
-		    		
 		  }
 
 }

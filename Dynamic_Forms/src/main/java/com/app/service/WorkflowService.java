@@ -17,13 +17,13 @@ import javax.xml.transform.stream.StreamResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 
 import com.app.model.Group;
+import com.app.model.User;
 import com.app.model.UserTask;
 import com.app.model.Workflow;
 import com.app.repository.UserTaskRepository;
@@ -40,7 +40,9 @@ public class WorkflowService {
 	
     @Autowired
     private UserTaskService UserTaskService;
-
+    
+    @Autowired
+    private UserService UserService;
 	
 	public List <Workflow> getAllWorkflow(){
 		return workflowrepository.findAll();
@@ -52,7 +54,7 @@ public class WorkflowService {
 	
 	
 	@PostMapping("/addWF")
-	public String addWF(@RequestBody Workflow WF) {
+	public String addWF(Workflow WF) {
 		
 		List <Workflow>  listwf =workflowrepository.findAll();
 
@@ -78,7 +80,7 @@ public class WorkflowService {
 				  //save in mongo db 
 				  workflowrepository.save(WF);
 			      String xml=addFlowable();
-			      List<Group>  listGP =new ArrayList();
+			      List<Group>  listGP =new ArrayList<Group>();
 			      WF.setWFXML(xml);
 				  workflowrepository.save(WF);
 				  
@@ -150,5 +152,55 @@ public class WorkflowService {
 				  }
 			 return xmlString;
 		}
+		
+		
 
+		public List<Workflow> getListProcessbyUser() {
+			
+			User Current_User =UserService.getCurrentUser();
+			List<UserTask> listUT =userTaskrepository.findAll();
+			List<Workflow> listAllWF =workflowrepository.findAll();
+			
+			List<Group> listGPofUser =Current_User.getGroups();
+			
+			List<UserTask> listUserTask =new ArrayList<UserTask>();
+			List<UserTask> listUserTask1 =new ArrayList<UserTask>();
+			List<Workflow> listWF =new ArrayList<Workflow>();
+			
+			for(int j=0;j<listAllWF.size();j++) {
+				
+				boolean find=false;
+				int i=0;
+				
+				while(find==false && listUT.size()>i) {
+					
+					if(listUT.get(i).getWorkFlow().getId().equals(listAllWF.get(j).getId())) {
+						find=true;
+						listUserTask1.add(listUT.get(i));
+					
+					}else {
+						i++;
+					}	
+			}}
+			
+			for(int i=0;i<listUserTask1.size();i++) {
+				
+				List<Group> listGPofUT =listUserTask1.get(i).getGroup();
+				
+				for (int k=0; k< listGPofUser.size() ;k++) {
+				
+					for (int j=0; j< listGPofUT.size() ;j++) {
+					
+						if(listGPofUT.get(j).getName_GP().equals(listGPofUser.get(k).getName_GP())) {
+				    	    listUserTask.add(listUserTask1.get(i));
+						}
+					}
+				}
+			}
+			for(int i=0;i<listUserTask.size();i++) {
+				listWF.add(listUserTask.get(i).getWorkFlow());	
+			}
+
+			return listWF;
+		}
 }

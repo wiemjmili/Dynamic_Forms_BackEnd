@@ -1,6 +1,6 @@
 package com.app.ressource;
 
-import java.util.ArrayList;
+
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -43,7 +43,6 @@ public class UserTaskController {
 			return ResponseEntity.badRequest().header( e.getMessage()).build();
 		}
 	}
-    
     
 	@GetMapping("/findUsertask/{nameUT}/{nameWF}")
 	public ResponseEntity<String> getUserTask(@PathVariable(value = "nameUT") String nameUT , @PathVariable(value ="nameWF") String nameWF) 

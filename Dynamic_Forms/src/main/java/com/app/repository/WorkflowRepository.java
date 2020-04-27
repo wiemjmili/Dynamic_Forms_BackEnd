@@ -6,6 +6,4 @@ import org.springframework.stereotype.Repository;
 import com.app.model.Workflow;
 
 @Repository
-public interface WorkflowRepository extends MongoRepository<Workflow,String>{
-
-}
+public interface WorkflowRepository extends MongoRepository<Workflow,String>{}
