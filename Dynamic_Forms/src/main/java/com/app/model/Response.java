@@ -5,15 +5,16 @@ import java.util.Arrays;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-@Document(collection = "Requests")
-public class Requests {
-	
+
+@Document(collection = "Response")
+public class Response {
+
 	@Id
 	private String id;
-	private String [][] request;
+	private String [][] response;
 	private User user;
 	private Form form;
-	private boolean valide;
+	private String idReq;
 	
 	
 	public String getId() {
@@ -22,11 +23,11 @@ public class Requests {
 	public void setId(String id) {
 		this.id = id;
 	}
-	public String[][] getRequest() {
-		return request;
+	public String[][] getResponse() {
+		return response;
 	}
-	public void setRequest(String[][] request) {
-		this.request = request;
+	public void setResponse(String[][] response) {
+		this.response = response;
 	}
 	public User getUser() {
 		return user;
@@ -40,11 +41,11 @@ public class Requests {
 	public void setForm(Form form) {
 		this.form = form;
 	}
-	public boolean isValide() {
-		return valide;
+	public String getIdReq() {
+		return idReq;
 	}
-	public void setValide(boolean valide) {
-		this.valide = valide;
+	public void setIdReq(String idReq) {
+		this.idReq = idReq;
 	}
 	@Override
 	public int hashCode() {
@@ -52,9 +53,9 @@ public class Requests {
 		int result = 1;
 		result = prime * result + ((form == null) ? 0 : form.hashCode());
 		result = prime * result + ((id == null) ? 0 : id.hashCode());
-		result = prime * result + Arrays.deepHashCode(request);
+		result = prime * result + ((idReq == null) ? 0 : idReq.hashCode());
+		result = prime * result + Arrays.deepHashCode(response);
 		result = prime * result + ((user == null) ? 0 : user.hashCode());
-		result = prime * result + (valide ? 1231 : 1237);
 		return result;
 	}
 	@Override
@@ -65,7 +66,7 @@ public class Requests {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Requests other = (Requests) obj;
+		Response other = (Response) obj;
 		if (form == null) {
 			if (other.form != null)
 				return false;
@@ -76,18 +77,20 @@ public class Requests {
 				return false;
 		} else if (!id.equals(other.id))
 			return false;
-		if (!Arrays.deepEquals(request, other.request))
+		if (idReq == null) {
+			if (other.idReq != null)
+				return false;
+		} else if (!idReq.equals(other.idReq))
+			return false;
+		if (!Arrays.deepEquals(response, other.response))
 			return false;
 		if (user == null) {
 			if (other.user != null)
 				return false;
 		} else if (!user.equals(other.user))
 			return false;
-		if (valide != other.valide)
-			return false;
 		return true;
 	}
 
-
-
+	
 }

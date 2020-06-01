@@ -13,9 +13,11 @@ public class User {
 	private String name;
 	private String email;
 	private String login;
-	private String roles;
+	private String password;
+	private List <Role> roles;
 	private List <Group> groups;
 	
+
 	public String getId() {
 		return id;
 	}
@@ -40,10 +42,11 @@ public class User {
 	public void setLogin(String login) {
 		this.login = login;
 	}
-	public String getRoles() {
+
+	public List<Role> getRoles() {
 		return roles;
 	}
-	public void setRoles(String roles) {
+	public void setRoles(List<Role> roles) {
 		this.roles = roles;
 	}
 	public List<Group> getGroups() {
@@ -51,6 +54,12 @@ public class User {
 	}
 	public void setGroups(List<Group> groups) {
 		this.groups = groups;
+	}
+	public String getPassword() {
+		return password;
+	}
+	public void setPassword(String password) {
+		this.password = password;
 	}
 	@Override
 	public int hashCode() {

@@ -19,13 +19,13 @@ import com.app.service.FormsService;
 public class FormController {
 	
     @Autowired
-    private FormsService FormService;
+    private FormsService formService;
  
     @GetMapping("/findAllForms/{nameWF}")
 	public ResponseEntity<List<Form> > getForms(@PathVariable(value = "nameWF") String nameWF) {
 		try {
 			
-			return ResponseEntity.accepted().body(FormService.getListFormByNameWorkflow(nameWF));
+			return ResponseEntity.accepted().body(formService.getListFormByNameWorkflow(nameWF));
 			
 		} catch (Exception e) {
 			return ResponseEntity.badRequest().header( e.getMessage()).build();
@@ -36,7 +36,18 @@ public class FormController {
 	public ResponseEntity<List<Form> > getAllForms() {
 		try {
 			
-			return ResponseEntity.accepted().body(FormService.getALLForms());
+			return ResponseEntity.accepted().body(formService.getALLForms());
+			
+		} catch (Exception e) {
+			return ResponseEntity.badRequest().header( e.getMessage()).build();
+		}
+	}
+    
+    @GetMapping("/getFormbyUserTask/{idUT}")
+	public ResponseEntity <Form>  getFormbyUserTask(@PathVariable(value = "idUT") String idUT) {
+		try {
+			
+			return ResponseEntity.accepted().body(formService.getFormbyUserTask(idUT));
 			
 		} catch (Exception e) {
 			return ResponseEntity.badRequest().header( e.getMessage()).build();
@@ -47,7 +58,7 @@ public class FormController {
 	public ResponseEntity <String> addForm(@RequestBody Form form) {
 		try {
 			
-			return ResponseEntity.accepted().body(FormService.addForm(form));
+			return ResponseEntity.accepted().body(formService.addForm(form));
 			
 		} catch (Exception e) {
 			return ResponseEntity.badRequest().header( e.getMessage()).build();
@@ -58,13 +69,35 @@ public class FormController {
 	public ResponseEntity<List<Form> > getFormbyProcess(@PathVariable(value = "nameWF") String nameWF) {
 		try {
 			
-			return ResponseEntity.accepted().body(FormService.getFormbyProcess(nameWF));
+			return ResponseEntity.accepted().body(formService.getFormbyProcess(nameWF));
 			
 		} catch (Exception e) {
 			return ResponseEntity.badRequest().header( e.getMessage()).build();
 		}
 	}
     
+    @GetMapping("/getFormsByUser/{idUT}")
+	public ResponseEntity<List<Form> >  getFormsByUser(@PathVariable(value = "idUT") String idUT) {
+		try {
+			
+			return ResponseEntity.accepted().body(formService. getFormsByUser(idUT));
+			
+		} catch (Exception e) {
+			return ResponseEntity.badRequest().header( e.getMessage()).build();
+		}
+	}
+    
+  /* @GetMapping("/getForm/{idUT}")
+	public ResponseEntity <List<Form> >  getForm_Validate(@PathVariable(value = "idUT") String idUT) {
+		try {
+			
+			return ResponseEntity.accepted().body(FormService.getForm_Validate(idUT));
+			
+		} catch (Exception e) {
+			return ResponseEntity.badRequest().header( e.getMessage()).build();
+		}
+	}
+    */
 
 }
 

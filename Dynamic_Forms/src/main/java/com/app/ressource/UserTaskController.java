@@ -20,24 +20,24 @@ import com.app.service.UserTaskService;
 public class UserTaskController {
  
     @Autowired
-    private UserTaskService UserTaskService;
+    private UserTaskService usertaskService;
 
     @GetMapping("/findAlltasks")
 	public ResponseEntity<List<UserTask>> getTasks() {
 		try {
 			
-			return ResponseEntity.accepted().body(UserTaskService.getTasks());
+			return ResponseEntity.accepted().body(usertaskService.getTasks());
 			
 		} catch (Exception e) {
 			return ResponseEntity.badRequest().header( e.getMessage()).build();
 		}
 	}
 	
-    @GetMapping("/findAlltasks/{nameWF}")
-	public ResponseEntity<List<UserTask>> getTasksWF(@PathVariable(value = "nameWF") String nameWF) {
+    @GetMapping("/findAlltasks/{idWF}")
+	public ResponseEntity<List<UserTask>> getTasksforWF(@PathVariable(value = "idWF") String idWF) {
 		try {
 			
-			return ResponseEntity.accepted().body(UserTaskService.getTasksforWF(nameWF));
+			return ResponseEntity.accepted().body(usertaskService.getTasksforWF(idWF));
 			
 		} catch (Exception e) {
 			return ResponseEntity.badRequest().header( e.getMessage()).build();
@@ -48,7 +48,7 @@ public class UserTaskController {
 	public ResponseEntity<String> getUserTask(@PathVariable(value = "nameUT") String nameUT , @PathVariable(value ="nameWF") String nameWF) 
 	{
 		try {
-			return ResponseEntity.accepted().body(UserTaskService.getUserTask(nameUT,nameWF));
+			return ResponseEntity.accepted().body(usertaskService.getUserTask(nameUT,nameWF));
 			
 		} catch (Exception e) {
 			return ResponseEntity.badRequest().header( e.getMessage()).build();
@@ -59,7 +59,18 @@ public class UserTaskController {
 	public ResponseEntity <String> addGrouptoUserTask(@RequestBody UserTask UT) {
 		try {
 			
-			return ResponseEntity.accepted().body(UserTaskService.addGroup(UT));
+			return ResponseEntity.accepted().body(usertaskService.addGroup(UT));
+			
+		} catch (Exception e) {
+			return ResponseEntity.badRequest().header( e.getMessage()).build();
+		}
+	}
+    
+	@GetMapping("/getUT_ById/{idUT}")
+	public ResponseEntity<UserTask> getUT_ById(@PathVariable(value = "idUT") String idUT) 
+	{
+		try {
+			return ResponseEntity.accepted().body(usertaskService.getUT_ById(idUT));
 			
 		} catch (Exception e) {
 			return ResponseEntity.badRequest().header( e.getMessage()).build();

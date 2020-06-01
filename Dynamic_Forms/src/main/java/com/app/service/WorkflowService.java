@@ -16,7 +16,6 @@ import javax.xml.transform.stream.StreamResult;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -29,37 +28,53 @@ import com.app.model.Workflow;
 import com.app.repository.UserTaskRepository;
 import com.app.repository.WorkflowRepository;
 
+
 @Service
 public class WorkflowService {
 
 	@Autowired
-	private WorkflowRepository workflowrepository;
+	private WorkflowRepository workflowRepository;
 	
 	@Autowired
-	private UserTaskRepository userTaskrepository;
+	private UserTaskRepository usertaskRepository;
+
 	
     @Autowired
-    private UserTaskService UserTaskService;
+    private UserTaskService usertaskService;
     
     @Autowired
-    private UserService UserService;
+    private UserService userService;
 	
 	public List <Workflow> getAllWorkflow(){
-		return workflowrepository.findAll();
+		return workflowRepository.findAll();
 	}
 	
 	public Optional<Workflow> getWorkflow(String id){
-		return workflowrepository.findById(id);
+		return workflowRepository.findById(id);
 	}
 	
 	
-	@PostMapping("/addWF")
+	public Workflow getWF(String nameWF) {
+		
+		List <Workflow>  listwf =workflowRepository.findAll();
+		Workflow WF= new Workflow();
+		boolean find=false;
+		int j=0;
+		while(find==false && listwf.size()>j) {
+			if(listwf.get(j).getName().equals(nameWF)) {
+				find=true;
+				WF=listwf.get(j);
+			}else j++;
+		}return WF;
+		
+		}
+	
 	public String addWF(Workflow WF) {
 		
-		List <Workflow>  listwf =workflowrepository.findAll();
-
+		List <Workflow>  listwf =workflowRepository.findAll();
 		//save in file Process.bpmn20.xml
 		String name=saveProcess(WF);
+		if(!name.equals("")) {
 		WF.setName(name);
 		
 		boolean find=false;
@@ -71,32 +86,132 @@ public class WorkflowService {
 		}
 
 		if(find==false) {
-
-			List <UserTask> list=UserTaskService.getAllTasks();
+			List <UserTask> list=usertaskService.getAllTasks();
 			// add UserTasks 
-			
 			if(list.size()!=0) {
-				
 				  //save in mongo db 
-				  workflowrepository.save(WF);
+				  workflowRepository.save(WF);
 			      String xml=addFlowable();
 			      List<Group>  listGP =new ArrayList<Group>();
 			      WF.setWFXML(xml);
-				  workflowrepository.save(WF);
+			      workflowRepository.save(WF);
 				  
 			 int i=0;
 			 while(i<list.size()) 
 			  {
 				  list.get(i).setWorkFlow(WF);
 				  list.get(i).setGroup(listGP);
-				  userTaskrepository.save(list.get(i));
+				  UserTask UT=usertaskRepository.save(list.get(i));
+				  list.get(i).setId(UT.getId());
+				 // list.get(i+1).setIdNextUT(UT.getId());
 				  i++;
 			  } 
+			 j=0;
+			 while(j<list.size()) 
+			  {
+				  list.get(j).setIdNextUT(list.get(j+1).getId());
+				  usertaskRepository.save(list.get(j));
+				  j++;
+			  }
 			 }
-		return "Workflow added"+WF.getName();
+				return "Workflow added"+WF.getName();
 		
 		}else return "Existing Workflow with this name "+WF.getName();
+		
+	}return "Name workflow empty";
 	}
+	
+	
+	
+	
+	public String updateWF(Workflow WF) {
+		//save in file Process.bpmn20.xml
+		String name=saveProcess(WF);
+		if(!name.equals("")) {
+			
+			WF.setName(name);
+			Workflow existWF=getWF(name);
+			
+				if(existWF.getId()!=null) {
+			
+					List <UserTask> Tasks=usertaskService.getTasksforWF(existWF.getId());
+			
+					for (int i=0;i<Tasks.size();i++) {
+		
+						usertaskRepository.delete(Tasks.get(i));
+					}
+				
+					List <UserTask> list=usertaskService.getAllTasks();
+			
+			// add UserTasks 
+			
+				if(list.size()!=0) {
+				
+				  //save in mongo db 
+				  WF.setId(existWF.getId());
+				  workflowRepository.save(WF);
+			      String xml=addFlowable();
+			      List<Group>  listGP =new ArrayList<Group>();
+			      WF.setWFXML(xml);
+			      workflowRepository.save(WF);
+				  
+			 int i=0;
+			 while(i<list.size()) 
+			  {
+				  list.get(i).setWorkFlow(WF);
+				  list.get(i).setGroup(listGP);
+				  UserTask UT=usertaskRepository.save(list.get(i));
+				  list.get(i).setId(UT.getId());
+			
+				  i++;
+			  } 
+			 
+			 int j=0;
+			 while(j<list.size()) 
+			  {
+				  list.get(j).setIdNextUT(list.get(j+1).getId());
+				  usertaskRepository.save(list.get(j));
+				  j++;
+			  }
+			 
+			 
+			 }
+				return "Workflow updated"+WF.getName();
+		
+		}
+		
+	}return "Name workflow empty";
+	
+	}
+	
+	
+	public Workflow getWFbyid(String id) {
+		
+		List <Workflow>  listwf =workflowRepository.findAll();
+		Workflow WF= new Workflow();
+		boolean find=false;
+		int j=0;
+		while(find==false && listwf.size()>j) {
+			if(listwf.get(j).getId().equals(id)) {
+				find=true;
+				WF=listwf.get(j);
+			}else j++;
+		}return WF;
+		
+		}
+	
+	
+	public String deleteWF(String id) {
+		
+		if(!id.equals("")) {
+			Workflow existWF=getWFbyid(id);
+			List <UserTask> Tasks=usertaskService.getTasksforWF(id);
+				for (int i=0;i<Tasks.size();i++) {
+					usertaskRepository.delete(Tasks.get(i));}
+				workflowRepository.delete(existWF);}
+			return "ok";
+		}
+	
 	
 	public String saveProcess(Workflow wf){
 
@@ -157,9 +272,9 @@ public class WorkflowService {
 
 		public List<Workflow> getListProcessbyUser() {
 			
-			User Current_User =UserService.getCurrentUser();
-			List<UserTask> listUT =userTaskrepository.findAll();
-			List<Workflow> listAllWF =workflowrepository.findAll();
+			User Current_User =userService.getCurrentUser();
+			List<UserTask> listUT =usertaskRepository.findAll();
+			List<Workflow> listAllWF =workflowRepository.findAll();
 			
 			List<Group> listGPofUser =Current_User.getGroups();
 			
@@ -203,4 +318,6 @@ public class WorkflowService {
 
 			return listWF;
 		}
+		
+		
 }

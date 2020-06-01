@@ -11,23 +11,24 @@ public class UserTask {
 		@Id
 		private String id;
 		private String name;
-		private String groupN;
 		private Workflow workFlow;
 		private List <Group> group;
 		private String statut;
+		private String idNextUT;
 
+		public String getIdNextUT() {
+			return idNextUT;
+		}
+		public void setIdNextUT(String idNextUT) {
+			this.idNextUT = idNextUT;
+		}
 		public String getStatut() {
 			return statut;
 		}
 		public void setStatut(String statut) {
 			this.statut = statut;
 		}
-		public String getGroupN() {
-			return groupN;
-		}
-		public void setGroupN(String groupN) {
-			this.groupN = groupN;
-		}
+
 		public String getId() {
 			return id;
 		}
@@ -57,12 +58,7 @@ public class UserTask {
 		public int hashCode() {
 			final int prime = 31;
 			int result = 1;
-			result = prime * result + ((group == null) ? 0 : group.hashCode());
-			result = prime * result + ((groupN == null) ? 0 : groupN.hashCode());
-			result = prime * result + ((id == null) ? 0 : id.hashCode());
-			result = prime * result + ((name == null) ? 0 : name.hashCode());
-			result = prime * result + ((statut == null) ? 0 : statut.hashCode());
-			result = prime * result + ((workFlow == null) ? 0 : workFlow.hashCode());
+			result = prime * result + ((idNextUT == null) ? 0 : idNextUT.hashCode());
 			return result;
 		}
 		@Override
@@ -74,35 +70,10 @@ public class UserTask {
 			if (getClass() != obj.getClass())
 				return false;
 			UserTask other = (UserTask) obj;
-			if (group == null) {
-				if (other.group != null)
+			if (idNextUT == null) {
+				if (other.idNextUT != null)
 					return false;
-			} else if (!group.equals(other.group))
-				return false;
-			if (groupN == null) {
-				if (other.groupN != null)
-					return false;
-			} else if (!groupN.equals(other.groupN))
-				return false;
-			if (id == null) {
-				if (other.id != null)
-					return false;
-			} else if (!id.equals(other.id))
-				return false;
-			if (name == null) {
-				if (other.name != null)
-					return false;
-			} else if (!name.equals(other.name))
-				return false;
-			if (statut == null) {
-				if (other.statut != null)
-					return false;
-			} else if (!statut.equals(other.statut))
-				return false;
-			if (workFlow == null) {
-				if (other.workFlow != null)
-					return false;
-			} else if (!workFlow.equals(other.workFlow))
+			} else if (!idNextUT.equals(other.idNextUT))
 				return false;
 			return true;
 		}

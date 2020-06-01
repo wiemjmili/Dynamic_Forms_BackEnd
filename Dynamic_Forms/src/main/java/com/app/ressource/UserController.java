@@ -1,5 +1,7 @@
 package com.app.ressource;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -13,14 +15,14 @@ public class UserController {
 
 	
     @Autowired
-    private UserService UserService;
+    private UserService userService;
  
-    @GetMapping("/check_User/{email}/{login}")
-	public ResponseEntity<String> verif_User(@PathVariable(value = "email") String email,@PathVariable(value = "login") String login) {
+    @GetMapping("/check_User/{email}/{password}")
+	public ResponseEntity<String> verif_User(@PathVariable(value = "email") String email,@PathVariable(value = "password") String password) {
 		try {
 	
 		
-			return ResponseEntity.accepted().body(UserService.verif_User(email,login));
+			return ResponseEntity.accepted().body(userService.verif_User(email,password));
 			
 			
 		} catch (Exception e) {
@@ -32,7 +34,7 @@ public class UserController {
 	public ResponseEntity <String> addUser(@RequestBody User user) {
 		try {
 			
-			return ResponseEntity.accepted().body(UserService.addUser(user));
+			return ResponseEntity.accepted().body(userService.addUser(user));
 			
 			
 		} catch (Exception e) {
@@ -45,13 +47,45 @@ public class UserController {
 	public ResponseEntity<User> getCurrentUser() {
 		try {
 			
-			return ResponseEntity.accepted().body(UserService.getCurrentUser());	
+			return ResponseEntity.accepted().body(userService.getCurrentUser());	
 			
 		} catch (Exception e) {
 			
 			return ResponseEntity.badRequest().header( e.getMessage()).build();
 		}
 		
+	}
+   
+   @GetMapping("/getAllUsers")
+	public ResponseEntity<List<User>> getAllUser() {
+		try {
+			
+			return ResponseEntity.accepted().body(userService.getAllUser());
+			
+		} catch (Exception e) {
+			return ResponseEntity.badRequest().header( e.getMessage()).build();
+		}
+	}
+   @GetMapping("/getUser_Byid/{id}")
+	public ResponseEntity<User> getUser_Byid(@PathVariable(value = "id") String id) {
+		try {
+			
+			return ResponseEntity.accepted().body(userService.getUser_Byid(id));
+			
+		} catch (Exception e) {
+			return ResponseEntity.badRequest().header( e.getMessage()).build();
+		}
+	}
+   
+   @DeleteMapping("/deleteUser/{id}")
+	public ResponseEntity <String>  deleteUser(@PathVariable(value = "id") String id) {
+		try {
+			
+			return ResponseEntity.accepted().body(userService.deleteUser(id));
+			
+		} catch (Exception e) {
+			return ResponseEntity.badRequest().header( e.getMessage()).build();
+		}
 	}
 
 }

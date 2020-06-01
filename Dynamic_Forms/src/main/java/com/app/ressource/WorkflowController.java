@@ -51,6 +51,17 @@ public class WorkflowController {
 		}
 	}
     
+    @PostMapping("/updateWF")
+	public ResponseEntity <String> updateWF(@RequestBody Workflow WF) {
+		try {
+			
+			return ResponseEntity.accepted().body(workflowService.updateWF(WF));
+			
+		} catch (Exception e) {
+			return ResponseEntity.badRequest().header( e.getMessage()).build();
+		}
+	}
+    
     @GetMapping("/getlistProcessbyUser")
  	public ResponseEntity<List<Workflow> >getListProcessbyUser() {
  		try {
@@ -62,6 +73,17 @@ public class WorkflowController {
  			return ResponseEntity.badRequest().header( e.getMessage()).build();
  		}
  		
+ 	}
+    
+    @DeleteMapping("/deleteWF/{id}")
+ 	public ResponseEntity <String>  deleteWF(@PathVariable(value = "id") String id){
+ 		try {
+ 			
+ 			return ResponseEntity.accepted().body(workflowService.deleteWF(id));
+ 			
+ 		} catch (Exception e) {
+ 			return ResponseEntity.badRequest().header( e.getMessage()).build();
+ 		}
  	}
  
 }

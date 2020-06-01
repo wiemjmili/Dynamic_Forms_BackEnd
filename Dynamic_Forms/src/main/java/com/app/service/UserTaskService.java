@@ -30,20 +30,35 @@ import com.app.repository.WorkflowRepository;;
 public class UserTaskService {
 	
 	@Autowired
-	private UserTaskRepository UserTaskrepository;
+	private UserTaskRepository usertaskRepository;
 	@Autowired
-	private WorkflowRepository Workflowrepository;
+	private WorkflowRepository workflowRepository;
 	
 	  public List <UserTask> getTasks(){
-		return UserTaskrepository.findAll();
+		return usertaskRepository.findAll();
 		}
 	
 	  //get list user_tasks for workflow by name
-	  public List <UserTask> getTasksforWF(String nameWF){
+	  public List <UserTask> getTasksforWF(String idWF){
 		  
-		  List <UserTask> listUT =UserTaskrepository.findAll();
+		  List <UserTask> listUT =usertaskRepository.findAll();
 		  List <UserTask>  listUTWF =new ArrayList<UserTask>();
+
+		  for (int i = 0; i < listUT.size(); i++)   
+		  {   
+			  if(listUT.get(i).getWorkFlow().getId().equals(idWF)) {
+				
+				  listUTWF.add(listUT.get(i));
+			  }
+		  }
+
+		  return listUTWF;
+	  }
+	  public List <UserTask> getTasksBynameWF(String nameWF){
 		  
+		  List <UserTask> listUT =usertaskRepository.findAll();
+		  List <UserTask>  listUTWF =new ArrayList<UserTask>();
+
 		  for (int i = 0; i < listUT.size(); i++)   
 		  {   
 			  if(listUT.get(i).getWorkFlow().getName().equals(nameWF)) {
@@ -51,14 +66,14 @@ public class UserTaskService {
 				  listUTWF.add(listUT.get(i));
 			  }
 		  }
-		
+
 		  return listUTWF;
 	  }
 	
 	  //get the id of User task by nameWF and nameUT ( because we can have two user_tasks with the same name in different workflow)
 		public String getUserTask(String nameUT,String nameWF) {
 			
-			List <UserTask> listUT=UserTaskrepository.findAll();
+			List <UserTask> listUT=usertaskRepository.findAll();
 			UserTask UT=new UserTask();
 			
 			boolean find=false;
@@ -76,30 +91,50 @@ public class UserTaskService {
 		
 		
 	
-		public String addGroup( UserTask UT) {
-			
-
-			if(!UT.getName().equals("") || UT.getGroup().size()!=0) {
 		
-			UserTask UserT=new UserTask();
-			List <UserTask> listUT=UserTaskrepository.findAll();
+		public UserTask getUT_ById(String idUT) {
+			
+			List <UserTask> listUT=usertaskRepository.findAll();
+			UserTask UT=new UserTask();
 			
 			boolean find=false;
 			int j=0;
-			
-			while(find==false && j<listUT.size()) {
-				  if(listUT.get(j).getName().equals(UT.getName())) {
+			while(find==false && listUT.size()>j) {
+				if(listUT.get(j).getId().equals(idUT)  ) {
+					find=true;
+					UT=listUT.get(j);
+				}else {
+					j++;
+				}	
+			}
+			return UT;
+			}
+		
+		
+		
+		public String addGroup( UserTask UT) {
+
+			if(!UT.getId().equals("") || UT.getGroup().size()!=0) {
+			UserTask UserT=new UserTask();
+			List <UserTask> listUT=usertaskRepository.findAll();
+			boolean find=false;
+			int j=0;
+
+				while(find==false && j<listUT.size()) {
+				
+					if(listUT.get(j).getId().equals(UT.getId()) ) {
 				        UserT=listUT.get(j);
 				        find=true;
 				  }
 				  else j++;
 				}
 			
-			  UserT.setGroup(UT.getGroup());
-			  UserTaskrepository.save(UserT);
-			  
-			//  addGptoUT(UserT.getWorkFlow());
+				UserT.setGroup(UT.getGroup());
+				usertaskRepository.save(UserT);
+				// add candidate groups to xml file 
+				addGptoUT(UserT.getWorkFlow());
 			}
+		
 			return UT.getName();
 		}
 	
@@ -119,6 +154,7 @@ public class UserTaskService {
 		  String Name= node.getAttributes().getNamedItem("name").getNodeValue();
 		  UserTask task= new UserTask();
 		  task.setName(Name);
+		  //task= UserTaskrepository.save(task);
 		  listUserTask.add(task);
 	      } 
 		  }
@@ -131,7 +167,7 @@ public class UserTaskService {
 		//Add Group To User Task dans l'xml
 		public  void  addGptoUT(Workflow wf){
 
-			List <UserTask> listUT =UserTaskrepository.findAll();
+			List <UserTask> listUT =usertaskRepository.findAll();
 			String xmlWF=wf.getWFXML();
 			String xmlString="";
 			DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();  
@@ -139,7 +175,7 @@ public class UserTaskService {
 			try  
 			{  
 				builder = factory.newDocumentBuilder(); 
-				// System.out.println(xmlWF); 
+			
 				Document doc = builder.parse( new InputSource( new StringReader( xmlWF ) ) ); 
 				doc.getDocumentElement().normalize();
 				NodeList nodeList = doc.getElementsByTagName("bpmn2:userTask");  
@@ -170,7 +206,7 @@ public class UserTaskService {
 		  		} }
 			}}
 				wf.setWFXML(xmlString);
-				Workflowrepository.save(wf);
+				workflowRepository.save(wf);
 			}
 			catch (Exception e) {  
 				e.printStackTrace();  
