@@ -179,7 +179,7 @@ public class UserTaskService {
 				Document doc = builder.parse( new InputSource( new StringReader( xmlWF ) ) ); 
 				doc.getDocumentElement().normalize();
 				NodeList nodeList = doc.getElementsByTagName("bpmn2:userTask");  
-				String name="flowable:candidateGroups";
+				String name="flowable:assignee";
 	  
 				for (int itr = 0; itr < nodeList.getLength(); itr++){
 					String value="";

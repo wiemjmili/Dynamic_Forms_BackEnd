@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.app.model.Response;
+import com.app.model.Requests;
 import com.app.service.ResponseService;
 
 @RestController
@@ -26,6 +27,17 @@ public class ResponseController {
 		try {
 			
 			return ResponseEntity.accepted().body(responseService.addResponse(res));
+			
+		} catch (Exception e) {
+			return ResponseEntity.badRequest().header( e.getMessage()).build();
+		}
+	}
+    
+    @PostMapping("/reject_Request")
+	public ResponseEntity <String> reject_Request(@RequestBody Requests req) {
+		try {
+			
+			return ResponseEntity.accepted().body(responseService.reject_Request(req));
 			
 		} catch (Exception e) {
 			return ResponseEntity.badRequest().header( e.getMessage()).build();

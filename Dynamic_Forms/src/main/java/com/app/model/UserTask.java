@@ -1,6 +1,7 @@
 package com.app.model;
 
 import java.util.List;
+import com.app.enums.*;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -15,6 +16,7 @@ public class UserTask {
 		private List <Group> group;
 		private String statut;
 		private String idNextUT;
+		private State state;
 
 		public String getIdNextUT() {
 			return idNextUT;
@@ -53,6 +55,12 @@ public class UserTask {
 		}
 		public void setGroup(List<Group> group) {
 			this.group = group;
+		}
+		public State getState() {
+			return state;
+		}
+		public void setState(State state) {
+			this.state = state;
 		}
 		@Override
 		public int hashCode() {

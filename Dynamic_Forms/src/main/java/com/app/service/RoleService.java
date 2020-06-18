@@ -12,23 +12,23 @@ import com.app.repository.RoleRepository;
 public class RoleService {
 	
 	@Autowired
-	private RoleRepository RoleRepository;
+	private RoleRepository roleRepository;
 	
 	public String addRole( Role role) {
 		if(role.getName()!="") {
-		RoleRepository.save(role);}
+			roleRepository.save(role);}
 		return "added user " +role.getName() ;
 	}
 
 	
 	public List<Role> getAllRoles() {
-		List <Role> list =RoleRepository.findAll();
+		List <Role> list =roleRepository.findAll();
 		return list;
 	}
 	
 	public Role getRole_Byid(String id) {
 		Role Role=new Role();
-		List <Role> list =RoleRepository.findAll();
+		List <Role> list =roleRepository.findAll();
 		boolean find=false;
 		int i=0;
 		
@@ -45,7 +45,7 @@ public class RoleService {
 	
 	public String deleteRole( String id) {
 		
-		List <Role> roles =RoleRepository.findAll();
+		List <Role> roles =roleRepository.findAll();
 		Role role=new Role();
 		boolean find=false;
 		int i=0;
@@ -60,7 +60,7 @@ public class RoleService {
 			}
 		
 		if(find==true) {
-			RoleRepository.delete(role);
+			roleRepository.delete(role);
 			return "Role deleted";
 		}else return "Role not deleted";
 	

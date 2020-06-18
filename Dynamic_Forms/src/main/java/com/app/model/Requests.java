@@ -5,6 +5,8 @@ import java.util.Arrays;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import com.app.enums.State;
+
 @Document(collection = "Requests")
 public class Requests {
 	
@@ -14,6 +16,8 @@ public class Requests {
 	private User user;
 	private Form form;
 	private boolean valide;
+	private String idProc ;
+	private State state;
 	
 	
 	public String getId() {
@@ -45,6 +49,18 @@ public class Requests {
 	}
 	public void setValide(boolean valide) {
 		this.valide = valide;
+	}
+	public String getIdProc() {
+		return idProc;
+	}
+	public void setIdProc(String idProc) {
+		this.idProc = idProc;
+	}
+	public State getState() {
+		return state;
+	}
+	public void setState(State state) {
+		this.state = state;
 	}
 	@Override
 	public int hashCode() {
