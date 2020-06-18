@@ -47,6 +47,7 @@ public class RequestsService {
     private ResponseService responseService;
     @Autowired
     private UserTaskService userTaskService;
+    
     static TaskService taskService;
 
 		public String addRequest( Requests req) {
@@ -75,7 +76,7 @@ public class RequestsService {
 		        proc.setIdDefinition(idDef);
 		        proc.setWorkflow(UT.getWorkFlow());
 		        proc.setUser(user);
-		        proc.setState(State.TO_INITIATE);
+		        proc.setState(State.IN_PROGRESS);
 		        Process p=processRepository.save(proc); 
 		        
 		        req.setIdProc(p.getId()); 
@@ -265,7 +266,7 @@ public class RequestsService {
 	}
 
 	public List<Requests> getRequestToValidate1() {
-		
+
 		List <Requests> listReq =requestsRepository.findAll();
 		List <Requests>  listReqUser =new ArrayList<Requests>();
 		List <Response>  listResUser =new ArrayList<Response>();
@@ -280,7 +281,9 @@ public class RequestsService {
 			
 			
 			for(int j=0;j<listReq.size();j++) {
+				
 				find=false;
+				
 				for (int k=0;k<listReq.get(j).getUser().getGroups().size();k++) {	
 					
 					for (int l=0;l<listUTvalidate.size();l++) {
@@ -318,6 +321,7 @@ public class RequestsService {
 						listResUser.add(listRes.get(j));
 					}
 				}
+				
 			
 				if(listResUser.size()!=0) {
 					for(int k=0;k<listReq.size();k++) {
@@ -410,12 +414,15 @@ public class RequestsService {
 	}
 
 	public List<Requests> getRequestValidated() {
+
 		 List <Requests>  listReqUser =new ArrayList<Requests>();
-		 List <Requests>  listReq_Reject =listReq_Reject();	
+
+		// List <Requests>  listReq_Reject =listReq_Reject();	
+		 
 		 List<Requests> req= getRequestToValidate1() ;
 		 
 		 List<Response> res= responseService.getAllresponsebyUser();
-
+		 System.out.println(res.size());
 		 for(int i=0;i<req.size();i++) {
 
 			 for(int j=0;j<res.size();j++) {
@@ -424,9 +431,9 @@ public class RequestsService {
 				 } 
 			 } 
 		 }
-		 for(int i=0;i<listReq_Reject.size();i++) {
+		/* for(int i=0;i<listReq_Reject.size();i++) {
 			listReqUser.add(listReq_Reject.get(i));	 
-		 }
+		 }*/
 		 return listReqUser;
  
 	}

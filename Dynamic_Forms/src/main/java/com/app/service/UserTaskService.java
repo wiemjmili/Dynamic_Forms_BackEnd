@@ -132,7 +132,7 @@ public class UserTaskService {
 				UserT.setGroup(UT.getGroup());
 				usertaskRepository.save(UserT);
 				// add candidate groups to xml file 
-				addGptoUT(UserT.getWorkFlow());
+				//addGptoUT(UserT.getWorkFlow());
 			}
 		
 			return UT.getName();

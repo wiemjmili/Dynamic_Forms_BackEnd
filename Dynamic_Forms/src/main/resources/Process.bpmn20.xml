@@ -10,15 +10,15 @@
       <bpmn2:incoming>SequenceFlow_1srejq0</bpmn2:incoming>
     </bpmn2:endEvent>
     <bpmn2:sequenceFlow id="SequenceFlow_1srejq0" sourceRef="Task_1bahi12" targetRef="EndEvent_0vevw5n"/>
-    <bpmn2:userTask id="Task_0i6psd3" name="Demande attestation de travail">
+    <bpmn2:userTask di:assignee="Group data" flowable:assignee="Data Group" id="Task_0i6psd3" name="Demande attestation de travail">
       <bpmn2:incoming>SequenceFlow_1p0pbdx</bpmn2:incoming>
       <bpmn2:outgoing>SequenceFlow_0jq16s7</bpmn2:outgoing>
     </bpmn2:userTask>
-    <bpmn2:userTask id="Task_1v8taj5" name="Validation Manager">
+    <bpmn2:userTask di:assignee="Group digital" flowable:assignee="RH Group" id="Task_1v8taj5" name="Validation RH">
       <bpmn2:incoming>SequenceFlow_0jq16s7</bpmn2:incoming>
       <bpmn2:outgoing>SequenceFlow_0ibry9v</bpmn2:outgoing>
     </bpmn2:userTask>
-    <bpmn2:userTask id="Task_1bahi12" name="Validation RH">
+    <bpmn2:userTask di:assignee="Group RH" flowable:assignee="Manager Group" id="Task_1bahi12" name="Validation manger">
       <bpmn2:incoming>SequenceFlow_0ibry9v</bpmn2:incoming>
       <bpmn2:outgoing>SequenceFlow_1srejq0</bpmn2:outgoing>
     </bpmn2:userTask>
