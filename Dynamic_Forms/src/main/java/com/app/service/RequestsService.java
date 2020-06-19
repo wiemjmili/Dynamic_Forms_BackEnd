@@ -80,6 +80,7 @@ public class RequestsService {
 		        Process p=processRepository.save(proc); 
 		        
 		        req.setIdProc(p.getId()); 
+		        req.setState(State.IN_PROGRESS);
 		        requestsRepository.save(req);
 		        taskService.complete(task.getId());
 		
@@ -416,13 +417,12 @@ public class RequestsService {
 	public List<Requests> getRequestValidated() {
 
 		 List <Requests>  listReqUser =new ArrayList<Requests>();
+		 List <Requests>  listReq_Reject =listReq_Reject();
 
-		// List <Requests>  listReq_Reject =listReq_Reject();	
-		 
 		 List<Requests> req= getRequestToValidate1() ;
 		 
 		 List<Response> res= responseService.getAllresponsebyUser();
-		 System.out.println(res.size());
+	
 		 for(int i=0;i<req.size();i++) {
 
 			 for(int j=0;j<res.size();j++) {
@@ -431,9 +431,9 @@ public class RequestsService {
 				 } 
 			 } 
 		 }
-		/* for(int i=0;i<listReq_Reject.size();i++) {
+		 for(int i=0;i<listReq_Reject.size();i++) {
 			listReqUser.add(listReq_Reject.get(i));	 
-		 }*/
+		 }
 		 return listReqUser;
  
 	}
