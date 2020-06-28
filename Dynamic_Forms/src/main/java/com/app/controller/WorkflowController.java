@@ -1,7 +1,6 @@
-package com.app.ressource;
+package com.app.controller;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -30,7 +29,7 @@ public class WorkflowController {
 	}
     
     @GetMapping("/findAllWF/{id}")
-	public ResponseEntity <Optional<Workflow>> getForms(@PathVariable(value = "id") String id) {
+	public ResponseEntity <Workflow> getForms(@PathVariable(value = "id") String id) {
 		try {
 			
 			return ResponseEntity.accepted().body(workflowService.getWorkflow(id));

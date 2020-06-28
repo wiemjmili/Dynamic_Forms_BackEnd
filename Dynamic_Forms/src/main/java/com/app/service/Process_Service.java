@@ -38,18 +38,6 @@ public class Process_Service {
 		}
 		return processEngine;
 	}
-
-	public Process getLastProcess() {
-		
-		int  count =processRepository.findAll().size();
-		List<Process> list=processRepository.findAll();
-		Process proc=new Process();
-		if(list.size()!=0) {		
-	    proc=list.get(count-1);
-	    }else proc=null;
-
-		return proc;
-	}
 	
 	public Process getProcess_ById(String idProc) {
 		
@@ -88,9 +76,8 @@ public class Process_Service {
 		
 		if(id_Def.equals("")){
 			
-			ProcessEngine processEngine = getEngine();
+			processEngine = getEngine();
 			RepositoryService repositoryService = processEngine.getRepositoryService();
-			//Deployment deployment = repositoryService.createDeployment().addClasspathResource("Process.bpmn20.xml").deploy();
 			Deployment deployment = repositoryService.createDeployment().addString("Process" + ".bpmn", xmlWF).deploy();
 			ProcessDefinition processDefinition = repositoryService.createProcessDefinitionQuery()
 						.deploymentId(deployment.getId()).singleResult();

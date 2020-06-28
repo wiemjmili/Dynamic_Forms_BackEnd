@@ -15,7 +15,7 @@ public class RoleService {
 	private RoleRepository roleRepository;
 	
 	public String addRole( Role role) {
-		if(role.getName()!="") {
+		if(!role.getName().equals("")) {
 			roleRepository.save(role);}
 		return "added user " +role.getName() ;
 	}

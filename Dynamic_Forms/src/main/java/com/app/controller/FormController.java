@@ -1,4 +1,4 @@
-package com.app.ressource;
+package com.app.controller;
 
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -87,17 +87,7 @@ public class FormController {
 		}
 	}
     
-  /* @GetMapping("/getForm/{idUT}")
-	public ResponseEntity <List<Form> >  getForm_Validate(@PathVariable(value = "idUT") String idUT) {
-		try {
-			
-			return ResponseEntity.accepted().body(FormService.getForm_Validate(idUT));
-			
-		} catch (Exception e) {
-			return ResponseEntity.badRequest().header( e.getMessage()).build();
-		}
-	}
-    */
+
 
 }
 

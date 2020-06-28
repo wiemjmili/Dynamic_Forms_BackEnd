@@ -55,7 +55,7 @@ public class RequestsService {
 				User user=userService.getCurrentUser();
 				req.setUser(user);
 				UserTask UT=userTaskService.getUT_ById(req.getForm().getIdUT());
-		 
+		        
 			    ProcessEngine processEngine = process_Service.getEngine();
 				Map<String, Object> variables = new HashMap<>();
 			    RuntimeService runtimeService = processEngine.getRuntimeService();
@@ -66,11 +66,10 @@ public class RequestsService {
 							.startProcessInstanceById(idDef, variables);
 
 
-				TaskService taskService = processEngine.getTaskService();
+				 taskService = processEngine.getTaskService();
 	    	
 	    		Task task = taskService.createTaskQuery()
 						.processInstanceId(processInstance.getId()).singleResult();
-	    		System.out.println(task.getName());
 		        Process proc=new Process();
 		        proc.setIdProcess(processInstance.getId());
 		        proc.setIdDefinition(idDef);
@@ -79,6 +78,7 @@ public class RequestsService {
 		        proc.setState(State.IN_PROGRESS);
 		        Process p=processRepository.save(proc); 
 		        
+		        req.setWf(UT.getWorkFlow());
 		        req.setIdProc(p.getId()); 
 		        req.setState(State.IN_PROGRESS);
 		        requestsRepository.save(req);
@@ -226,10 +226,10 @@ public class RequestsService {
 					}
 				}
 				
-				if(find==true) {
-					if(!listReq.get(j).isValide()) {
+				if(find==true && !listReq.get(j).isValide()) {
+					
 					listReqUser.add(listReq.get(j));
-					}}
+					}
 			}
 			if(listReqUser.size()==0) {
 				List <Response> listRes = responseRepository.findAll();
@@ -360,80 +360,44 @@ public class RequestsService {
 					}else j++;
 
 				}			 
-				if(find==false ) {
-					
+				if(find==false && !req.get(i).getState().equals(State.REFUSED)) {
+				
 					listReqUser.add(req.get(i));
 					
 				}
 		 }
 		 
-		 }else listReqUser=req;
+		 }else {
+			 for(int i=0;i<req.size();i++) {
+				 if(!req.get(i).getState().equals(State.REFUSED)){
+						listReqUser.add(req.get(i));
+						}	 
+			 }
+		 } 
 		
 		 return listReqUser; 
 	}
 	
-	
-	
-	public List<Requests> listReq_Reject() {
-		
-		List <Requests> listReq =requestsRepository.findAll();
-		List <Requests>  listReq_Reject =new ArrayList<Requests>();
-		List <Workflow> listWF = workflowRepository.findAll();
-
-		boolean find=false;
-
-	
-		for (int i=0;i<listWF.size();i++) {
-
-			List<UserTask> listUTvalidate=getUserTaskToValidate(listWF.get(i).getName());
-			for(int j=0;j<listReq.size();j++) {
-				find=false;
-				for (int k=0;k<listReq.get(j).getUser().getGroups().size();k++) {	
-					
-					for (int l=0;l<listUTvalidate.size();l++) {
-						
-					if(listUTvalidate.get(l).getId().equals(listReq.get(j).getForm().getIdUT())) {
-						
-						for(int m=0;m<listUTvalidate.get(l).getGroup().size();m++) {
-
-							if(listReq.get(j).getUser().getGroups().get(k).getName_GP().equals(listUTvalidate.get(l).getGroup().get(m).getName_GP()))
-							{find=true;}
-						}
-						}
-					}
-				}
-				
-				if(find==true) {			
-					if(listReq.get(j).getState().equals(State.REFUSED)) {
-					listReq_Reject.add(listReq.get(j));
-					}}
-			
-			}
-		}
-
-		return listReq_Reject;
-	}
 
 	public List<Requests> getRequestValidated() {
 
 		 List <Requests>  listReqUser =new ArrayList<Requests>();
-		 List <Requests>  listReq_Reject =listReq_Reject();
-
 		 List<Requests> req= getRequestToValidate1() ;
-		 
 		 List<Response> res= responseService.getAllresponsebyUser();
 	
 		 for(int i=0;i<req.size();i++) {
-
+			 if( req.get(i).getState().equals(State.REFUSED)) 
+			 {
+				 listReqUser.add(req.get(i));
+			 }else {
 			 for(int j=0;j<res.size();j++) {
 				 if(req.get(i).getId().equals(res.get(j).getIdReq()) ) {
 					 listReqUser.add(req.get(i));
 				 } 
-			 } 
+			 } }
 		 }
-		 for(int i=0;i<listReq_Reject.size();i++) {
-			listReqUser.add(listReq_Reject.get(i));	 
-		 }
+	
+
 		 return listReqUser;
  
 	}

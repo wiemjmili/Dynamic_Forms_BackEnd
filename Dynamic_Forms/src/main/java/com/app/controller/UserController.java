@@ -1,4 +1,4 @@
-package com.app.ressource;
+package com.app.controller;
 
 import java.util.List;
 
@@ -55,6 +55,8 @@ public class UserController {
 		}
 		
 	}
+   
+
    
    @GetMapping("/getAllUsers")
 	public ResponseEntity<List<User>> getAllUser() {

@@ -52,12 +52,12 @@ public class FormsService {
 		List <Form> all_Forms =formRepository.findAll();
 		List <Form> Forms =new ArrayList<Form>();
 		UserTask UT=usertaskService.getUT_ById(idUT);
-		List <UserTask> listUTask=new ArrayList<UserTask>();
+		List <UserTask> list_task=new ArrayList<UserTask>();
 		List <UserTask> list=new ArrayList<UserTask>();
 
-			listUTask=requestsService.getUserTaskByUser(UT.getWorkFlow().getName());
-				for(int j=0;j<listUTask.size();j++) {
-					list.add(listUTask.get(j));
+		list_task=requestsService.getUserTaskByUser(UT.getWorkFlow().getName());
+				for(int j=0;j<list_task.size();j++) {
+					list.add(list_task.get(j));
 			}
 
 			for (int i=0; i<all_Forms.size();i++) {
@@ -138,23 +138,5 @@ public class FormsService {
 		return listForm;
     }
     
-    /* public List<Form>   getForm_Validate(String idUT){
-	
-    List<UserTask> list=RequestsService.getOnetaskToValidate(idUT);
-    List <Form> Forms =new ArrayList<Form>();
-	List <Form> all_Forms =Formrepository.findAll();
-	boolean find=false;
-	int j=0;
-	Form form =new Form();
-	while(find==false && all_Forms.size()>j) {
-		if(all_Forms.get(j).getIdUT().equals(list.get(0).getId())) {
-			find=true;
-			form=all_Forms.get(j);
-		}else {
-			j++;
-		}	
-	}
-     Forms.add(form);
-	 return Forms ;
-}*/
+
 }

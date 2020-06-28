@@ -1,4 +1,4 @@
-package com.app.ressource;
+package com.app.controller;
 
 
 import java.util.List;

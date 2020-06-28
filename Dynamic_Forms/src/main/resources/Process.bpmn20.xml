@@ -1,78 +1,48 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?><bpmn2:definitions xmlns:bpmn2="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:flowable="http://www.omg.org/spec/DD/20100524/DI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" id="sample-diagram" targetNamespace="http://bpmn.io/schema/bpmn" xsi:schemaLocation="http://www.omg.org/spec/BPMN/20100524/MODEL BPMN20.xsd">
-  <bpmn2:process id="Process_1" name="Attestation de travail">
+  <bpmn2:process id="Process_1" name="vv">
     <bpmn2:startEvent id="StartEvent_1">
-      <bpmn2:outgoing>SequenceFlow_1p0pbdx</bpmn2:outgoing>
+      <bpmn2:outgoing>SequenceFlow_1yetowr</bpmn2:outgoing>
     </bpmn2:startEvent>
-    <bpmn2:sequenceFlow id="SequenceFlow_1p0pbdx" sourceRef="StartEvent_1" targetRef="Task_0i6psd3"/>
-    <bpmn2:sequenceFlow id="SequenceFlow_0jq16s7" sourceRef="Task_0i6psd3" targetRef="Task_1v8taj5"/>
-    <bpmn2:sequenceFlow id="SequenceFlow_0ibry9v" sourceRef="Task_1v8taj5" targetRef="Task_1bahi12"/>
-    <bpmn2:endEvent id="EndEvent_0vevw5n">
-      <bpmn2:incoming>SequenceFlow_1srejq0</bpmn2:incoming>
+    <bpmn2:sequenceFlow id="SequenceFlow_1yetowr" sourceRef="StartEvent_1" targetRef="Task_0t4zlea"/>
+    <bpmn2:endEvent id="EndEvent_1yv8c9g">
+      <bpmn2:incoming>SequenceFlow_0duqrcq</bpmn2:incoming>
     </bpmn2:endEvent>
-    <bpmn2:sequenceFlow id="SequenceFlow_1srejq0" sourceRef="Task_1bahi12" targetRef="EndEvent_0vevw5n"/>
-    <bpmn2:userTask di:assignee="Group data" flowable:assignee="Data Group" id="Task_0i6psd3" name="Demande attestation de travail">
-      <bpmn2:incoming>SequenceFlow_1p0pbdx</bpmn2:incoming>
-      <bpmn2:outgoing>SequenceFlow_0jq16s7</bpmn2:outgoing>
-    </bpmn2:userTask>
-    <bpmn2:userTask di:assignee="Group digital" flowable:assignee="RH Group" id="Task_1v8taj5" name="Validation RH">
-      <bpmn2:incoming>SequenceFlow_0jq16s7</bpmn2:incoming>
-      <bpmn2:outgoing>SequenceFlow_0ibry9v</bpmn2:outgoing>
-    </bpmn2:userTask>
-    <bpmn2:userTask di:assignee="Group RH" flowable:assignee="Manager Group" id="Task_1bahi12" name="Validation manger">
-      <bpmn2:incoming>SequenceFlow_0ibry9v</bpmn2:incoming>
-      <bpmn2:outgoing>SequenceFlow_1srejq0</bpmn2:outgoing>
+    <bpmn2:sequenceFlow id="SequenceFlow_0duqrcq" sourceRef="Task_0t4zlea" targetRef="EndEvent_1yv8c9g"/>
+    <bpmn2:userTask id="Task_0t4zlea" name="vvvv">
+      <bpmn2:incoming>SequenceFlow_1yetowr</bpmn2:incoming>
+      <bpmn2:outgoing>SequenceFlow_0duqrcq</bpmn2:outgoing>
     </bpmn2:userTask>
   </bpmn2:process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_1">
     <bpmndi:BPMNPlane bpmnElement="Process_1" id="BPMNPlane_1">
       <bpmndi:BPMNShape bpmnElement="StartEvent_1" id="_BPMNShape_StartEvent_2">
-        <dc:Bounds height="36" width="36" x="153" y="83"/>
+        <dc:Bounds height="36" width="36" x="144" y="106"/>
         <bpmndi:BPMNLabel>
-          <dc:Bounds height="20" width="90" x="126" y="119"/>
+          <dc:Bounds height="20" width="90" x="117" y="142"/>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNEdge bpmnElement="SequenceFlow_1p0pbdx" id="SequenceFlow_1p0pbdx_di">
-        <di:waypoint x="189" y="101"/>
-        <di:waypoint x="239" y="101"/>
+      <bpmndi:BPMNEdge bpmnElement="SequenceFlow_1yetowr" id="SequenceFlow_1yetowr_di">
+        <di:waypoint x="180" y="124"/>
+        <di:waypoint x="230" y="124"/>
         <bpmndi:BPMNLabel>
-          <dc:Bounds height="13" width="0" x="214" y="79.5"/>
+          <dc:Bounds height="13" width="0" x="205" y="102.5"/>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="SequenceFlow_0jq16s7" id="SequenceFlow_0jq16s7_di">
-        <di:waypoint x="339" y="101"/>
-        <di:waypoint x="380" y="101"/>
+      <bpmndi:BPMNShape bpmnElement="EndEvent_1yv8c9g" id="EndEvent_1yv8c9g_di">
+        <dc:Bounds height="36" width="36" x="380" y="106"/>
         <bpmndi:BPMNLabel>
-          <dc:Bounds height="13" width="0" x="359.5" y="79.5"/>
-        </bpmndi:BPMNLabel>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="SequenceFlow_0ibry9v" id="SequenceFlow_0ibry9v_di">
-        <di:waypoint x="480" y="101"/>
-        <di:waypoint x="521" y="101"/>
-        <bpmndi:BPMNLabel>
-          <dc:Bounds height="13" width="0" x="500.5" y="79.5"/>
-        </bpmndi:BPMNLabel>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNShape bpmnElement="EndEvent_0vevw5n" id="EndEvent_0vevw5n_di">
-        <dc:Bounds height="36" width="36" x="662" y="83"/>
-        <bpmndi:BPMNLabel>
-          <dc:Bounds height="13" width="0" x="680" y="122"/>
+          <dc:Bounds height="13" width="0" x="398" y="145"/>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNEdge bpmnElement="SequenceFlow_1srejq0" id="SequenceFlow_1srejq0_di">
-        <di:waypoint x="621" y="101"/>
-        <di:waypoint x="662" y="101"/>
+      <bpmndi:BPMNEdge bpmnElement="SequenceFlow_0duqrcq" id="SequenceFlow_0duqrcq_di">
+        <di:waypoint x="330" y="124"/>
+        <di:waypoint x="380" y="124"/>
         <bpmndi:BPMNLabel>
-          <dc:Bounds height="13" width="0" x="641.5" y="79.5"/>
+          <dc:Bounds height="13" width="0" x="355" y="102.5"/>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNShape bpmnElement="Task_0i6psd3" id="UserTask_0bu84up_di">
-        <dc:Bounds height="80" width="100" x="239" y="61"/>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="Task_1v8taj5" id="UserTask_1g3mkjw_di">
-        <dc:Bounds height="80" width="100" x="380" y="61"/>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="Task_1bahi12" id="UserTask_0w6k5c8_di">
-        <dc:Bounds height="80" width="100" x="521" y="61"/>
+      <bpmndi:BPMNShape bpmnElement="Task_0t4zlea" id="UserTask_0wa52fk_di">
+        <dc:Bounds height="80" width="100" x="230" y="84"/>
       </bpmndi:BPMNShape>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>

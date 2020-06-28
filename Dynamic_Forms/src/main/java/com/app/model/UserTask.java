@@ -62,29 +62,7 @@ public class UserTask {
 		public void setState(State state) {
 			this.state = state;
 		}
-		@Override
-		public int hashCode() {
-			final int prime = 31;
-			int result = 1;
-			result = prime * result + ((idNextUT == null) ? 0 : idNextUT.hashCode());
-			return result;
-		}
-		@Override
-		public boolean equals(Object obj) {
-			if (this == obj)
-				return true;
-			if (obj == null)
-				return false;
-			if (getClass() != obj.getClass())
-				return false;
-			UserTask other = (UserTask) obj;
-			if (idNextUT == null) {
-				if (other.idNextUT != null)
-					return false;
-			} else if (!idNextUT.equals(other.idNextUT))
-				return false;
-			return true;
-		}
+		
 
 		
 

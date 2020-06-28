@@ -21,8 +21,10 @@ public class GroupService {
 	}
 	
 	public String addGroup( Group Gp) {
-		if(Gp.getName_GP()!="") {
+		
+		if(!Gp.getName_GP().equals("")) {
 			groupRepository.save(Gp);}
+		
 		return "Group added : " +Gp.getName_GP();
 	}
 	

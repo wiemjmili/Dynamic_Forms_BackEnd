@@ -12,6 +12,7 @@ import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -33,6 +34,9 @@ public class UserTaskService {
 	private UserTaskRepository usertaskRepository;
 	@Autowired
 	private WorkflowRepository workflowRepository;
+	
+	@Value("${url_file}")
+	private String url_file;
 	
 	  public List <UserTask> getTasks(){
 		return usertaskRepository.findAll();
@@ -142,7 +146,7 @@ public class UserTaskService {
 		  
 		  List <UserTask>  listUserTask =new ArrayList<UserTask>();
 		  try { 
-		  File file = new File("C:\\Users\\Famille\\git\\Dynamic_Forms_BackEnd\\Dynamic_Forms\\src\\main\\resources\\Process.bpmn20.xml");  
+		  File file = new File(url_file);  
 		  DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();  
 		  DocumentBuilder db = dbf.newDocumentBuilder();  
 		  Document doc = db.parse(file);  
@@ -186,24 +190,24 @@ public class UserTaskService {
 					Node node = nodeList.item(itr); 
 					String Name= node.getAttributes().getNamedItem("name").getNodeValue();
 					for(int j=0;j<listUT.size();j++) {
-						if(listUT.get(j).getWorkFlow().getId().equals(wf.getId())) {
-							if (Name.equals(listUT.get(j).getName())) {
-								if(listUT.get(j).getGroup()!=null) {
-									value=listUT.get(j).getGroup().get(0).getName_GP();
-								}
+						if(listUT.get(j).getWorkFlow().getId().equals(wf.getId()) && Name.equals(listUT.get(j).getName()) && listUT.get(j).getGroup()!=null) {
+						
+								
+								value=listUT.get(j).getGroup().get(0).getName_GP();
+							
 								Element element=(Element) nodeList.item(itr);
 								element.setAttribute(name, value);
 								TransformerFactory transformerFactory = TransformerFactory.newInstance();
 								Transformer transformer = transformerFactory.newTransformer();
 								DOMSource source = new DOMSource(doc);
-								StreamResult result = new StreamResult(new File("C:\\Users\\Famille\\git\\Dynamic_Forms_BackEnd\\Dynamic_Forms\\src\\main\\resources\\Process.bpmn20.xml"));
+								StreamResult result = new StreamResult(new File(url_file));
 								transformer.transform(source, result);
 		  		         
 								StringWriter writer = new StringWriter();
 								//transform document to string 
 								transformer.transform(new DOMSource(doc), new StreamResult(writer));
 								xmlString = writer.getBuffer().toString();  
-		  		} }
+		  		} 
 			}}
 				wf.setWFXML(xmlString);
 				workflowRepository.save(wf);

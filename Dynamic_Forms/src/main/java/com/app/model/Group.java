@@ -26,34 +26,5 @@ public class Group {
 		this.name_GP = name_GP;
 	}
 
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((id == null) ? 0 : id.hashCode());
-		result = prime * result + ((name_GP == null) ? 0 : name_GP.hashCode());
-		return result;
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Group other = (Group) obj;
-		if (id == null) {
-			if (other.id != null)
-				return false;
-		} else if (!id.equals(other.id))
-			return false;
-		if (name_GP == null) {
-			if (other.name_GP != null)
-				return false;
-		} else if (!name_GP.equals(other.name_GP))
-			return false;
-		return true;
-	}
+	
 }

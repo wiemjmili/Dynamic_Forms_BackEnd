@@ -1,5 +1,4 @@
 package com.app.model;
-import java.util.Arrays;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -39,39 +38,7 @@ public class Form {
 		return idUT;
 	}
 
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + Arrays.hashCode(data);
-		result = prime * result + ((id == null) ? 0 : id.hashCode());
-		result = prime * result + ((idUT == null) ? 0 : idUT.hashCode());
-		return result;
-	}
 
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Form other = (Form) obj;
-		if (!Arrays.equals(data, other.data))
-			return false;
-		if (id == null) {
-			if (other.id != null)
-				return false;
-		} else if (!id.equals(other.id))
-			return false;
-		if (idUT == null) {
-			if (other.idUT != null)
-				return false;
-		} else if (!idUT.equals(other.idUT))
-			return false;
-		return true;
-	}
 
 
 

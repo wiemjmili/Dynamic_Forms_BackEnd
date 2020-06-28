@@ -23,7 +23,8 @@ public class UserService {
 		while(find==false && Users.size()>j) {
 			
 			if(Users.get(j).getEmail().equals(email) && Users.get(j).getPassword().equals(password)) {
-				if(Users.get(j).getName().equals("admin")) {
+				if(Users.get(j).getName().equals("Admin")) {
+					current_User=Users.get(j);
 					return "admin";
 				}else {
 					find=true;
@@ -40,7 +41,7 @@ public class UserService {
 	}
 	
 	public String addUser( User user) {
-		if(user.getName()!="") {
+		if(!user.getName().equals("")) {
 			userRepository.save(user);}
 		return "User added" +user.getName() ;
 	}
@@ -97,25 +98,3 @@ public class UserService {
 	
 }
 
-
-/*
-List<String> list =new ArrayList();
-for(int i=0;i<listUserTask.size();i++) {
-	listWF.add(listUserTask.get(i).getWorkFlow());	
-	list.add(listUserTask.get(i).getWorkFlow().getName());
-}
-
-  Set set = new HashSet() ;
-set.addAll(list) ;
-List<String> distinctList = new ArrayList(set) ;
-
-List<Workflow> all_WF =workflowrepository.findAll();
-List<Workflow> listWF1 =new ArrayList();
-
-for(int i=0;i<distinctList.size();i++) {
-	for(int j=0;j<all_WF.size();j++) {
-		if(distinctList.get(i).equals(all_WF.get(j).getName())){
-			listWF1.add(all_WF.get(j));
-		}
-	}
-}*/

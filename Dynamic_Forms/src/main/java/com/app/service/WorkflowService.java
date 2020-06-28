@@ -15,6 +15,7 @@ import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -25,6 +26,8 @@ import com.app.model.Group;
 import com.app.model.User;
 import com.app.model.UserTask;
 import com.app.model.Workflow;
+import com.app.model.Form;
+import com.app.repository.FormRepository;
 import com.app.repository.UserTaskRepository;
 import com.app.repository.WorkflowRepository;
 
@@ -38,19 +41,38 @@ public class WorkflowService {
 	@Autowired
 	private UserTaskRepository usertaskRepository;
 
+	@Autowired
+	private FormRepository formRepository;
 	
     @Autowired
     private UserTaskService usertaskService;
     
     @Autowired
     private UserService userService;
+    
+	@Value("${url_file}")
+	private String url_file;
 	
 	public List <Workflow> getAllWorkflow(){
 		return workflowRepository.findAll();
 	}
 	
-	public Optional<Workflow> getWorkflow(String id){
-		return workflowRepository.findById(id);
+	public Workflow getWorkflow(String id){
+		Workflow WF=new Workflow();
+		List <Workflow> list =workflowRepository.findAll();
+		boolean find=false;
+		int i=0;
+
+		while(find==false && list.size()>i) {
+			
+			if(list.get(i).getId().equals(id)) {
+				WF=list.get(i);
+				find=true;
+				}else i++;
+			
+			}
+		return WF;
+		
 	}
 	
 	
@@ -103,7 +125,6 @@ public class WorkflowService {
 				  list.get(i).setGroup(listGP);
 				  UserTask UT=usertaskRepository.save(list.get(i));
 				  list.get(i).setId(UT.getId());
-				 // list.get(i+1).setIdNextUT(UT.getId());
 				  i++;
 			  } 
 			 j=0;
@@ -204,10 +225,24 @@ public class WorkflowService {
 	public String deleteWF(String id) {
 		
 		if(!id.equals("")) {
+			List<Form>  list_Form =formRepository.findAll();
 			Workflow existWF=getWFbyid(id);
 			List <UserTask> Tasks=usertaskService.getTasksforWF(id);
 				for (int i=0;i<Tasks.size();i++) {
-					usertaskRepository.delete(Tasks.get(i));}
+					usertaskRepository.delete(Tasks.get(i));
+					}
+				int n=list_Form.size();
+				for (int i=0;i<Tasks.size();i++) {
+					boolean find=false;
+					int j=0;
+						while(j<n && find==false) {
+							if(Tasks.get(i).getId().equals(list_Form.get(j).getIdUT())) {
+								formRepository.delete(list_Form.get(j));
+								find=true;
+							}else j++;
+					}
+				}
+				
 				workflowRepository.delete(existWF);}
 			return "ok";
 		}
@@ -230,7 +265,7 @@ public class WorkflowService {
 			        TransformerFactory transformerFactory = TransformerFactory.newInstance();
 			        Transformer transformer = transformerFactory.newTransformer();
 			        DOMSource source = new DOMSource(doc);
-			        StreamResult result = new StreamResult(new File("C:\\Users\\Famille\\git\\Dynamic_Forms_BackEnd\\Dynamic_Forms\\src\\main\\resources\\Process.bpmn20.xml"));
+			        StreamResult result = new StreamResult(new File(url_file));
 			        transformer.transform(source, result);
 			        
 		        } catch (Exception e) {  
@@ -244,7 +279,7 @@ public class WorkflowService {
 		public String addFlowable() {
 			String xmlString="";
 			 try {   
-				  File file = new File("C:\\Users\\Famille\\git\\Dynamic_Forms_BackEnd\\Dynamic_Forms\\src\\main\\resources\\Process.bpmn20.xml");  
+				  File file = new File(url_file);  
 				  DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();  
 				  DocumentBuilder db = dbf.newDocumentBuilder();  
 				  Document doc = db.parse(file);  
@@ -255,7 +290,7 @@ public class WorkflowService {
 				  TransformerFactory transformerFactory = TransformerFactory.newInstance();
 				  Transformer transformer = transformerFactory.newTransformer();
 				  DOMSource source = new DOMSource(doc);
-				  StreamResult result = new StreamResult(new File("C:\\Users\\Famille\\git\\Dynamic_Forms_BackEnd\\Dynamic_Forms\\src\\main\\resources\\Process.bpmn20.xml"));
+				  StreamResult result = new StreamResult(new File(url_file));
 				  transformer.transform(source, result);	
 			      StringWriter writer = new StringWriter();
 			      //transform document to string 

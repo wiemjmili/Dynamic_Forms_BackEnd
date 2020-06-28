@@ -84,25 +84,28 @@ public class ResponseService {
 				proc_Instance=process_Instance;
 			}
 		}
-		System.out.println(proc_Instance.getId());
+
 		
 		
 		TaskService taskService = processEngine.getTaskService();
 		Task task = taskService.createTaskQuery()
 				.processInstanceId(idproc).singleResult();
-		
-		
+		Task Next_task = taskService.createTaskQuery()
+				.processInstanceId(idproc).singleResult();
+	
 		if(task!=null) {
 			taskService.complete(task.getId());
-			System.out.println(task.getName()  +"    Validated");
+			
+			if(Next_task==null && proc_Instance!=null) {
+				processEngine.getRuntimeService().deleteProcessInstance(proc_Instance.getId(), "");
+			}
+		
+			
 		}
 		
 		String idUT=res.getForm().getIdUT();
-		UserTask UT=UserTaskService.getUT_ById(idUT);
-		
-		if(req!=null) {
-			
-			User user=UserService.getCurrentUser();
+		UserTask UT=UserTaskService.getUT_ById(idUT);			
+	    User user=UserService.getCurrentUser();
 			res.setUser(user);
 			Responserepository.save(res);
 			
@@ -112,8 +115,7 @@ public class ResponseService {
 		}
 			req.setState(State.VALIDATED);
 			Requestsrepository.save(req);
-		}
-
+			
 		return "Response added ";
 	}
 	
@@ -137,10 +139,11 @@ public class ResponseService {
 			}
 		}
 		// delete the process
-		processEngine.getRuntimeService().deleteProcessInstance(proc_Instance.getId(), "refused");
+		if(proc_Instance!=null) {
+			processEngine.getRuntimeService().deleteProcessInstance(proc_Instance.getId(), "refused");
+		}
 		proc.setState(State.REFUSED);
 		processRepository.save(proc);
-		System.out.println("Process refused , User: " +req.getUser().getName()+" Process : "+proc.getWorkflow().getName());
 		req.setValide(true);
 		req.setState(State.REFUSED);
 		Requestsrepository.save(req);
