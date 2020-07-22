@@ -1,4 +1,5 @@
 package com.app.repository;
+
 import java.util.Optional;
 
 import org.springframework.data.mongodb.repository.MongoRepository;
@@ -9,8 +10,9 @@ import com.app.model.User;
 @Repository
 public interface UserRepository extends MongoRepository<User,String>{
 	
-	 User findByUsername(String username);
-	 User findByName(String name);
-	 Boolean existsByUsername(String username);
-	 Boolean existsByEmail(String email);
+	  Optional<User> findByUsername(String username);
+
+	  Boolean existsByUsername(String username);
+
+	  Boolean existsByEmail(String email);
 }

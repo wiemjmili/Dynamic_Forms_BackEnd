@@ -13,97 +13,90 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.app.model.Requests;
-import com.app.service.RequestsService;;
+import com.app.service.RequestsService;
 
 @RestController
 @RequestMapping("/api/requests")
 public class RequestsController {
-	
-    @Autowired
-    private RequestsService requestsService;
-	
-    @PostMapping("/addRequest")
-	public ResponseEntity <String> addRequest(@RequestBody Requests req) {
+
+	@Autowired
+	private RequestsService requestsService;
+
+	@PostMapping("/addRequest")
+	public ResponseEntity<String> addRequest(@RequestBody Requests req) {
 		try {
-			
+
 			return ResponseEntity.accepted().body(requestsService.addRequest(req));
-			
+
 		} catch (Exception e) {
-			return ResponseEntity.badRequest().header( e.getMessage()).build();
+			return ResponseEntity.badRequest().header(e.getMessage()).build();
 		}
 	}
-    
-    
-    
-    @GetMapping("/getALLRequest")
-	public ResponseEntity<List<Requests>>  getALLRequest() {
+
+	@GetMapping("/getALLRequest")
+	public ResponseEntity<List<Requests>> getALLRequest() {
 		try {
-			
-			return ResponseEntity.accepted().body(requestsService. getALLRequest());
-			
+
+			return ResponseEntity.accepted().body(requestsService.getALLRequest());
+
 		} catch (Exception e) {
-			return ResponseEntity.badRequest().header( e.getMessage()).build();
+			return ResponseEntity.badRequest().header(e.getMessage()).build();
 		}
 	}
-    
-    
-    @GetMapping("/getRequestByUser")
+
+	@GetMapping("/getRequestByUser")
 	public ResponseEntity<List<Requests>> getRequestByUser() {
 		try {
-			
+
 			return ResponseEntity.accepted().body(requestsService.getRequestByUser());
-			
+
 		} catch (Exception e) {
-			return ResponseEntity.badRequest().header( e.getMessage()).build();
+			return ResponseEntity.badRequest().header(e.getMessage()).build();
 		}
 	}
-    
-    
-    
-    @GetMapping("/getRequestByid/{id}")
-	public ResponseEntity <Requests> getRequestByid(@PathVariable(value = "id") String id) {
+
+	@GetMapping("/getRequestByid/{id}")
+	public ResponseEntity<Requests> getRequestByid(@PathVariable(value = "id") String id) {
 		try {
-			
+
 			return ResponseEntity.accepted().body(requestsService.getRequestByid(id));
-			
+
 		} catch (Exception e) {
-			return ResponseEntity.badRequest().header( e.getMessage()).build();
+			return ResponseEntity.badRequest().header(e.getMessage()).build();
 		}
 	}
-    
-    
-    @GetMapping("/getRequestToValidate")
+
+	@GetMapping("/getRequestToValidate")
 	public ResponseEntity<List<Requests>> getRequestToValidate() {
 		try {
-			
-			return ResponseEntity.accepted().body(requestsService.getRequest_To_Validate());
-			
+
+			return ResponseEntity.accepted().body(requestsService.getRequest_to_validate());
+
 		} catch (Exception e) {
-			return ResponseEntity.badRequest().header( e.getMessage()).build();
+			return ResponseEntity.badRequest().header(e.getMessage()).build();
 		}
 	}
-    
-    
-    @GetMapping("/getRequestValidated")
+
+	@GetMapping("/getRequestValidated")
 	public ResponseEntity<List<Requests>> getRequestValidated() {
 		try {
-			
+
 			return ResponseEntity.accepted().body(requestsService.getRequestValidated());
-			
+
 		} catch (Exception e) {
-			return ResponseEntity.badRequest().header( e.getMessage()).build();
+			return ResponseEntity.badRequest().header(e.getMessage()).build();
 		}
 	}
-    
-    @DeleteMapping("/cancelRequest/{id}")
- 	public ResponseEntity <String>  cancelRequest(@PathVariable(value = "id") String id) {
- 		try {
- 			
- 			return ResponseEntity.accepted().body(requestsService.cancelRequest(id));
- 			
- 		} catch (Exception e) {
- 			return ResponseEntity.badRequest().header( e.getMessage()).build();
- 		}
- 	}
-	
+
+	@DeleteMapping("/cancelRequest/{id}")
+	public ResponseEntity<String> cancelRequest(@PathVariable(value = "id") String id) {
+		try {
+
+			return ResponseEntity.accepted().body(requestsService.cancelRequest(id));
+
+		} catch (Exception e) {
+			return ResponseEntity.badRequest().header(e.getMessage()).build();
+		}
+	}
+
 }

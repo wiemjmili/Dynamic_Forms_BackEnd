@@ -10,59 +10,59 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.app.model.Response;
 import com.app.model.Requests;
+import com.app.model.Response;
 import com.app.service.ResponseService;
 
 @RestController
 @RequestMapping("/api/response")
 
 public class ResponseController {
-	
-    @Autowired
-    private ResponseService responseService;
-    
-    @PostMapping("/addResponse")
-	public ResponseEntity <String> addResponse(@RequestBody Response res) {
+
+	@Autowired
+	private ResponseService responseService;
+
+	@PostMapping("/addResponse")
+	public ResponseEntity<String> addResponse(@RequestBody Response res) {
 		try {
-			
+
 			return ResponseEntity.accepted().body(responseService.addResponse(res));
-			
+
 		} catch (Exception e) {
-			return ResponseEntity.badRequest().header( e.getMessage()).build();
+			return ResponseEntity.badRequest().header(e.getMessage()).build();
 		}
 	}
-    
-    @PostMapping("/reject_Request")
-	public ResponseEntity <String> reject_Request(@RequestBody Requests req) {
+
+	@PostMapping("/reject_Request")
+	public ResponseEntity<String> rejectRequest(@RequestBody Requests req) {
 		try {
-			
-			return ResponseEntity.accepted().body(responseService.reject_Request(req));
-			
+
+			return ResponseEntity.accepted().body(responseService.rejectRequest(req));
+
 		} catch (Exception e) {
-			return ResponseEntity.badRequest().header( e.getMessage()).build();
+			return ResponseEntity.badRequest().header(e.getMessage()).build();
 		}
 	}
-    
-    @GetMapping("/getAllResponsebyUser")
+
+	@GetMapping("/getAllResponsebyUser")
 	public ResponseEntity<List<Response>> getAllresponsebyUser() {
 		try {
-			
+
 			return ResponseEntity.accepted().body(responseService.getAllresponsebyUser());
-			
+
 		} catch (Exception e) {
-			return ResponseEntity.badRequest().header( e.getMessage()).build();
+			return ResponseEntity.badRequest().header(e.getMessage()).build();
 		}
 	}
-    
-    @GetMapping("/getAllResponse")
+
+	@GetMapping("/getAllResponse")
 	public ResponseEntity<List<Response>> getAllresponse() {
 		try {
-			
+
 			return ResponseEntity.accepted().body(responseService.getAllresponse());
-			
+
 		} catch (Exception e) {
-			return ResponseEntity.badRequest().header( e.getMessage()).build();
+			return ResponseEntity.badRequest().header(e.getMessage()).build();
 		}
 	}
 

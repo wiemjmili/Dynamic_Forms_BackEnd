@@ -5,67 +5,68 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-
 import com.app.model.Group;
 import com.app.repository.GroupRepository;
 
 @Service
 public class GroupService {
-	
+
 	@Autowired
 	private GroupRepository groupRepository;
-	
-	
-	public List <Group> getGroups(){
+
+	public List<Group> getGroups() {
 		return groupRepository.findAll();
 	}
-	
-	public String addGroup( Group Gp) {
-		
-		if(!Gp.getName_GP().equals("")) {
-			groupRepository.save(Gp);}
-		
-		return "Group added : " +Gp.getName_GP();
+
+	public String addGroup(Group gp) {
+
+		if (!gp.getName().equals("")) {
+			groupRepository.save(gp);
+		}
+
+		return "Group added : " + gp.getName();
 	}
-	
-	
-	public Group getGroup_Byid(String id) {
-		Group Group=new Group();
-		List <Group> list =groupRepository.findAll();
-		boolean find=false;
-		int i=0;
-		
-		while(find==false && list.size()>i) {
-			
-			if(list.get(i).getId().equals(id)) {
-				Group=list.get(i);
-					find=true;
-				}else i++;
-			
+
+	public Group getGroupByid(String id) {
+		Group group = new Group();
+		List<Group> list = groupRepository.findAll();
+		boolean find = false;
+		int i = 0;
+
+		while (find == false && list.size() > i) {
+
+			if (list.get(i).getId().equals(id)) {
+				group = list.get(i);
+				find = true;
+			} else {
+				i++;
 			}
-		return Group;
+		}
+		return group;
 	}
-	
-	public String deleteGroup( String id) {
-	
-		List <Group> Group =groupRepository.findAll();
-		Group Gp=new Group();
-		boolean find=false;
-		int i=0;
-		
-		while(find==false && Group.size()>i) {
-			
-			if(Group.get(i).getId().equals(id)) {
-					Gp=Group.get(i);
-					find=true;
-				}else i++;
-			
+
+	public String deleteGroup(String id) {
+
+		List<Group> group = groupRepository.findAll();
+		Group gp = new Group();
+		boolean find = false;
+		int i = 0;
+
+		while (find == false && group.size() > i) {
+
+			if (group.get(i).getId().equals(id)) {
+				gp = group.get(i);
+				find = true;
+			} else {
+				i++;
 			}
-		
-		if(find==true) {
-			groupRepository.delete(Gp);
+		}
+
+		if (find == true) {
+			groupRepository.delete(gp);
 			return "Group deleted";
-		}else return "Group not deleted";
-	
+		} else {
+			return "Group not deleted";
+		}
 	}
 }

@@ -3,15 +3,14 @@ package com.app.model;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-
-@Document(collection ="Form")
+@Document(collection = "Form")
 public class Form {
-	
+
 	@Id
 	private String id;
-	
+
 	private Object[] data;
-	
+
 	private String idUT;
 
 	public String getId() {
@@ -33,13 +32,9 @@ public class Form {
 	public void setId(String id) {
 		this.id = id;
 	}
-	
+
 	public String getIdUT() {
 		return idUT;
 	}
-
-
-
-
 
 }

@@ -40,10 +40,10 @@ public class WorkflowController {
 	}
 	
     @PostMapping("/addWF")
-	public ResponseEntity <String> addWF(@RequestBody Workflow WF) {
+	public ResponseEntity <String> addWF(@RequestBody Workflow wf) {
 		try {
 			
-			return ResponseEntity.accepted().body(workflowService.addWF(WF));
+			return ResponseEntity.accepted().body(workflowService.addWF(wf));
 			
 		} catch (Exception e) {
 			return ResponseEntity.badRequest().header( e.getMessage()).build();
@@ -51,10 +51,10 @@ public class WorkflowController {
 	}
     
     @PostMapping("/updateWF")
-	public ResponseEntity <String> updateWF(@RequestBody Workflow WF) {
+	public ResponseEntity <String> updateWF(@RequestBody Workflow wf) {
 		try {
 			
-			return ResponseEntity.accepted().body(workflowService.updateWF(WF));
+			return ResponseEntity.accepted().body(workflowService.updateWF(wf));
 			
 		} catch (Exception e) {
 			return ResponseEntity.badRequest().header( e.getMessage()).build();
